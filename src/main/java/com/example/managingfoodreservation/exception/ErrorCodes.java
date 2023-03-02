@@ -17,8 +17,7 @@ public enum ErrorCodes {
     CHEF_NOT_VALID(6001),
     CANTEENWORKER_NOT_FOUND(7000),
     CANTEENWORKER_NOT_VALID(7001),
-    COMPANY_NOT_FOUND(8000),
-    COMPANY_NOT_VALID(8001);
+  
     private final int code;
 
     ErrorCodes(int code) {
