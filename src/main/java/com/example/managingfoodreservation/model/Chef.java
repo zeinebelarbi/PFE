@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.Instant;
-import java.util.List;
+
 
 
 @Data
@@ -20,11 +20,11 @@ import java.util.List;
 public class Chef extends AbstractEntity {
     @Column (name="id_chef")
     private Integer id ;
-    @Column(name="name")
+    @Column(name="name",insertable = false,updatable = false)
     private String name;
 
     @ManyToOne
-    @JoinColumn(name ="Canteenworker ")
+    @JoinColumn(name ="Canteenworker ",insertable = false,updatable = false)
     private Canteenworker canteenworker  ;
     @Column (name ="DeliverTime")
     private Instant DeliverTime;
