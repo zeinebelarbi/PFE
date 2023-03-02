@@ -16,29 +16,30 @@ import java.util.Date;
 @AllArgsConstructor
 
 @Entity
-@Table (name="Staff")
+@Table (name="User")
 public class Staff extends AbstractEntity {
-    @Column (name="id_Staff")
+    @Column (name="id_User",insertable=false, updatable=false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id ;
-    @Column (name="Firstname" ,insertable=false, updatable=false)
 
+    @Column
     private String Firstname;
-    @Column(name="Lastname",insertable=false, updatable=false)
+
+    @Column(name="Lastname")
     private String Lastname;
-    @Embedded
+    @Column(name = "email",nullable = false)
     private String email;
-    @Embedded
+    @Column(name= "password")
     private String password;
-    @Column(name="phone",insertable=false, updatable=false)
+    @Column(name="phone")
     private String phone;
-    @Column(name="birth_date",insertable=false, updatable=false)
+    @Column(name="birth_date")
     private Date birth_date;
 
 
 
-    @ManyToOne
-    @JoinColumn(name="idCompany",insertable=false, updatable=false)
-    private Company Companyname ;
+  
 
     Staff(Integer id, Instant creationDate, Instant lastUpdateDate) {
 
@@ -49,4 +50,6 @@ public class Staff extends AbstractEntity {
 
         super();
     }
+
+
 }
