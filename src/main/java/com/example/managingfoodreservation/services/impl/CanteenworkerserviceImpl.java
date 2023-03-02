@@ -7,9 +7,8 @@ import com.example.managingfoodreservation.exception.EntityNotFoundException;
 import com.example.managingfoodreservation.exception.ErrorCodes;
 import com.example.managingfoodreservation.exception.InvalidEntityException;
 import com.example.managingfoodreservation.model.Canteenworker;
-import com.example.managingfoodreservation.services.Canteenworkerservice;
+import com.example.managingfoodreservation.services.CanteenworkerService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import com.example.managingfoodreservation.validator.Canteenworkervalidator;
@@ -22,14 +21,13 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public abstract class CanteenworkerserviceImpl implements Canteenworkerservice {
+public  class CanteenworkerServiceImpl implements CanteenworkerService {
 
 
 
 
-    private CanteenworkerRepository canteenworkerRepository;
-    @Autowired
-    public CanteenworkerserviceImpl(CanteenworkerRepository canteenworkerRepository){
+    private final CanteenworkerRepository canteenworkerRepository;
+    public CanteenworkerServiceImpl(CanteenworkerRepository canteenworkerRepository){
     this.canteenworkerRepository=canteenworkerRepository;
     }
 
@@ -48,7 +46,10 @@ public abstract class CanteenworkerserviceImpl implements Canteenworkerservice {
         );
         }
 
-
+    @Override
+    public CanteenworkerDto findByName(String name) {
+        return null;
+    }
 
 
     @Override
@@ -111,4 +112,6 @@ public abstract class CanteenworkerserviceImpl implements Canteenworkerservice {
         canteenworkerRepository.deleteById(id);
     }
 }
+
+
 
