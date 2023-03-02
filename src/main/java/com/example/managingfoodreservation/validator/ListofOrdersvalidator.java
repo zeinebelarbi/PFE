@@ -10,8 +10,7 @@ import java.util.List;
 public class ListofOrdersvalidator {
     public static List<String> validate(ListofOrdersDto listofOrdersDto) {
         List<String> errors = new ArrayList<>();
-        if (listofOrdersDto == null) {
-        }
+
         if (listofOrdersDto.getOrder() == null) {
             errors.add("Let us know the orders contained in the list ");
         }

@@ -45,7 +45,7 @@ public class Staffvalidator {
             }
         }
         if (staffDto.getBirth_date() == null) {
-            errors.add("Let us know the Staff's birthdate");
+            errors.add("Let us know the Staff's Birth_date");
         } else {
             if (!StringUtils.hasLength((CharSequence) staffDto.getBirth_date())) {
                 errors.add("The Birth_date field is required");

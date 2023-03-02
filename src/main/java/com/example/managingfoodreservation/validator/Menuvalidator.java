@@ -14,9 +14,7 @@ public class Menuvalidator {
         if (menuDto == null) {
             errors.add("Let us know the company's name");
         }
-        if (menuDto.getCompanyname() == null) {
-            errors.add("Let us know the company's name");
-        }
+
         if (menuDto.getDishes()== null){
             errors.add("Let us know the dish's name");
         }
