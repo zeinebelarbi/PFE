@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @Data
 public class StaffDto {
-    private Integer id;
+    private Integer id_User;
 
     private String Firstname;
 
@@ -27,7 +27,7 @@ public class StaffDto {
 
     private List<OrderDto> orders;
 
-    private CompanyDto Companyname;
+ 
 
     public StaffDto fromEntity(Staff staff) {
         if (staff == null) {
