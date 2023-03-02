@@ -24,7 +24,7 @@ public class OrderDto {
     private List<ListofOrdersDto>orders;
     private Order order;
 
-    public OrderDto fromEntity(Order order){
+    public static OrderDto fromEntity(Order order){
     if(order == null){
         return null;
     }
@@ -34,7 +34,7 @@ public class OrderDto {
             .number(order.getNumber())
             .build();
 }
-    public Order toEntity(OrderDto orderDto) {
+    public static Order toEntity(OrderDto orderDto) {
         if (orderDto == null) {
             return null;
         }
