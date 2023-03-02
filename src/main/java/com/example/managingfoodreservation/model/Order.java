@@ -16,7 +16,7 @@ public class Order extends AbstractEntity {
     @Column (name="id_order")
     private Integer id ;
 
-    @Column(name ="name")
+    @Column(name ="name",insertable = false,updatable = false)
     private String name;
 
     @Column(name ="date")
@@ -26,13 +26,13 @@ public class Order extends AbstractEntity {
     private Integer number;
 
     @ManyToOne
-    @JoinColumn(name="idstaff")
+    @JoinColumn(name="id_User")
 
     private Staff staff;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_id")
-    private Order order;
 
 
+
+    public void forEach(Object o) {
+    }
 }
