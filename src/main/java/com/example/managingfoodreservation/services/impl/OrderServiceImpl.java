@@ -10,7 +10,6 @@ import com.example.managingfoodreservation.dto.OrderDto;
 import com.example.managingfoodreservation.exception.EntityNotFoundException;
 import com.example.managingfoodreservation.exception.ErrorCodes;
 import com.example.managingfoodreservation.exception.InvalidEntityException;
-import com.example.managingfoodreservation.model.ListofOrders;
 import com.example.managingfoodreservation.model.Order;
 import com.example.managingfoodreservation.model.Staff;
 import com.example.managingfoodreservation.services.OrderService;
@@ -117,26 +116,51 @@ private ListofOrdersRepository listofOrdersRepository;
 
     @Override
     public OrderDto findByNumber(Integer number) {
-        return null;
+
+        if (number == null) {
+            log.error("The order's number is Null");
+            return null;
+        }
+        return orderRepository.findByNumber(number)
+                .map(OrderDto::fromEntity)
+                .orElseThrow(()->new EntityNotFoundException(
+                        "No order with this number has been found "+number,ErrorCodes.ORDER_NOT_FOUND
+                ));
     }
 
     @Override
     public List<ListofOrdersDto> findAll() {
-        return null;
+
+    return null;
     }
 
     @Override
     public OrderDto findByStaff(Staff staff) {
-        return null;
+
+    return null;
     }
 
     @Override
     public OrderDto findByOrder(Order order) {
-        return null;
+
+
+        if (order == null) {
+            log.error("The order  is Null");
+            return null;
+        }
+        return orderRepository.findByOrder(order)
+                .map(OrderDto::fromEntity)
+                .orElseThrow(()->new EntityNotFoundException(
+                        "No order has been found "+order,ErrorCodes.ORDER_NOT_FOUND
+                ));
     }
 
     @Override
     public void delete(Integer id) {
-
+        if(id==null){
+            log.error("The Order is null");
+            return;
+        }
+        orderRepository.deleteById(id);
     }
 }

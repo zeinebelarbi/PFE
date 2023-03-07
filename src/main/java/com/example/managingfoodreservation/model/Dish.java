@@ -21,7 +21,7 @@ public class Dish extends AbstractEntity {
     @Column(name="Dishname")
     private String Dishname ;
     @Column(name="Quantity")
-    private BigDecimal Quantity;
+    private Integer Quantity;
     @Column(name="OrderTime")
     private Instant OrderTime;
     @ManyToOne()

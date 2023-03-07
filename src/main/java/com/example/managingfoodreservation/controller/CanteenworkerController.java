@@ -6,25 +6,25 @@ package com.example.managingfoodreservation.controller;
 import com.example.managingfoodreservation.controller.Api.CanteenworkerApi;
 import com.example.managingfoodreservation.dto.CanteenworkerDto;
 
-import com.example.managingfoodreservation.services.Canteenworkerservice;
+import com.example.managingfoodreservation.services.CanteenworkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 
 @RestController
-public class CanteenworkerController implements CanteenworkerApi {
+public abstract class CanteenworkerController implements CanteenworkerApi {
 @Autowired
-private Canteenworkerservice canteenworkerservice;
+private CanteenworkerService canteenworkerservice;
 @Autowired
-public Canteenworkerservice getCanteenworkerservice(){
+public CanteenworkerService getCanteenworkerservice(){
+
     return canteenworkerservice;
 }
 @Autowired
-public CanteenworkerController(Canteenworkerservice canteenworkerservice){
+public CanteenworkerController(CanteenworkerService canteenworkerservice){
     this.canteenworkerservice=canteenworkerservice;
 
 }
@@ -44,7 +44,7 @@ public CanteenworkerController(Canteenworkerservice canteenworkerservice){
     }
 
     @Override
-    public CanteenworkerDto findByOrderPrice(BigDecimal OrderPrice) {
+    public CanteenworkerDto findByOrderPrice(Double OrderPrice) {
         return canteenworkerservice.findByOrderPrice(OrderPrice);
     }
 
@@ -55,7 +55,8 @@ public CanteenworkerController(Canteenworkerservice canteenworkerservice){
 
     @Override
     public List<CanteenworkerDto> findAll() {
-        return canteenworkerservice.findAll();
+
+    return canteenworkerservice.findAll();
     }
 
     @Override

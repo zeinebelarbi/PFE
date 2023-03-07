@@ -18,6 +18,9 @@ public interface CanteenworkerApi {
     CanteenworkerDto findById(@PathVariable("id") Integer id);
     @GetMapping(value =APP_ROOT+"/canteenworker/{OrderPrice}",produces = MediaType.APPLICATION_JSON_VALUE)
     CanteenworkerDto findByOrderPrice(@PathVariable("OrderPrice") BigDecimal OrderPrice);
+
+    CanteenworkerDto findByOrderPrice(Double OrderPrice);
+
     @GetMapping(value =APP_ROOT+"/canteenworker/{OrderTime}",produces = MediaType.APPLICATION_JSON_VALUE)
     CanteenworkerDto findByOrderTime(@PathVariable("OrderTime")Instant OrderTime);
     @GetMapping(value =APP_ROOT+"/canteenworker/all",produces = MediaType.APPLICATION_JSON_VALUE)

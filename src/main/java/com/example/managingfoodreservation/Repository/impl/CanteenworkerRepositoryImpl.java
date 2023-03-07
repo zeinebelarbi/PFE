@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
-import java.math.BigDecimal;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -76,7 +76,7 @@ public class CanteenworkerRepositoryImpl implements CanteenworkerRepository {
     }
 
     @Override
-    public Optional<Canteenworker> findByOrderPrice(BigDecimal orderPrice) {
+    public Optional<Canteenworker> findByOrderPrice(Double orderPrice) {
         return Optional.empty();
     }
 

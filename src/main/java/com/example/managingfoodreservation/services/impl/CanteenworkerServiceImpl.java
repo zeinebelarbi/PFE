@@ -7,14 +7,13 @@ import com.example.managingfoodreservation.exception.EntityNotFoundException;
 import com.example.managingfoodreservation.exception.ErrorCodes;
 import com.example.managingfoodreservation.exception.InvalidEntityException;
 import com.example.managingfoodreservation.model.Canteenworker;
-import com.example.managingfoodreservation.services.Canteenworkerservice;
+import com.example.managingfoodreservation.services.CanteenworkerService;
+import com.example.managingfoodreservation.validator.Canteenworkervalidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import com.example.managingfoodreservation.validator.Canteenworkervalidator;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -22,31 +21,27 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public abstract class CanteenworkerserviceImpl implements Canteenworkerservice {
-
-
-
-
+public abstract class CanteenworkerServiceImpl implements CanteenworkerService {
     private CanteenworkerRepository canteenworkerRepository;
     @Autowired
-    public CanteenworkerserviceImpl(CanteenworkerRepository canteenworkerRepository){
-    this.canteenworkerRepository=canteenworkerRepository;
+    public CanteenworkerServiceImpl(CanteenworkerRepository canteenworkerRepository){
+        this.canteenworkerRepository=canteenworkerRepository;
     }
 
     @Override
     public CanteenworkerDto save(CanteenworkerDto dto) {
-   List <String> errors= Canteenworkervalidator.validate(dto);
-   if(!errors.isEmpty()){
-    log.error("The Canteenworker is not valid{}",dto);
-    throw new InvalidEntityException("The Canteenworker is not valid ", ErrorCodes.CANTEENWORKER_NOT_VALID,errors);
-}
+        List<String> errors= Canteenworkervalidator.validate(dto);
+        if(!errors.isEmpty()){
+            log.error("The Canteenworker is not valid{}",dto);
+            throw new InvalidEntityException("The Canteenworker is not valid ", ErrorCodes.CANTEENWORKER_NOT_VALID,errors);
+        }
 
         return CanteenworkerDto.fromEntity(
                 canteenworkerRepository.save(
                         CanteenworkerDto.toEntity(dto)
                 )
         );
-        }
+    }
 
 
 
@@ -54,29 +49,29 @@ public abstract class CanteenworkerserviceImpl implements Canteenworkerservice {
     @Override
     public CanteenworkerDto findById(Integer id) {
         if(id ==null){
-            log.error("The Canteenworker's name is invalid");
+            log.error("The Canteenworker's Id is invalid");
             return null;
         }
 
-        Optional< Canteenworker> canteenworker =canteenworkerRepository.findById(id);
+        Optional<Canteenworker> canteenworker =canteenworkerRepository.findById(id);
         CanteenworkerDto dto =  CanteenworkerDto.fromEntity(canteenworker.get());
-    return Optional.of(dto).orElseThrow(()->
-            new EntityNotFoundException(
-                    "No Canteenworker with the Id ="+id+"exists",ErrorCodes.CANTEENWORKER_NOT_FOUND)
-            );
+        return Optional.of(dto).orElseThrow(()->
+                new EntityNotFoundException(
+                        "No Canteenworker with the Id ="+id+"exists", ErrorCodes.CANTEENWORKER_NOT_FOUND)
+        );
     }
 
 
 
     @Override
-    public CanteenworkerDto findByOrderPrice(BigDecimal OrderPrice) {
+    public CanteenworkerDto findByOrderPrice(Double OrderPrice) {
         if (!StringUtils.hasLength(OrderPrice.toString())){
             log.error("The order price is not found");
             return null;
         }
         Optional<Canteenworker> canteenworker=canteenworkerRepository.findByOrderPrice(OrderPrice);
-    return Optional.of(CanteenworkerDto.fromEntity(canteenworker.get())).orElseThrow(()->new EntityNotFoundException(
-            "No canteen worker with this OrderPrice"+OrderPrice+"is Found",ErrorCodes.CANTEENWORKER_NOT_FOUND));
+        return Optional.of(CanteenworkerDto.fromEntity(canteenworker.get())).orElseThrow(()->new EntityNotFoundException(
+                "No canteen worker with this OrderPrice"+OrderPrice+"is Found",ErrorCodes.CANTEENWORKER_NOT_FOUND));
     }
 
 

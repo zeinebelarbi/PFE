@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 
-import java.math.BigDecimal;
+
 import java.time.Instant;
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class CanteenworkerDto {
     private String name;
     private Integer id;
     private List<ListofOrdersDto> orders;
-    private BigDecimal orderPrice;
+    private Double orderPrice;
     private List<ChefDto> chefs;
     private Instant orderTime;
     public static CanteenworkerDto fromEntity(Canteenworker canteenworker) {

@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.math.BigDecimal;
+
 import java.time.Instant;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class Canteenworker extends AbstractEntity {
     private String name;
 
     @Column(name="orderprice")
-    private BigDecimal OrderPrice;
+    private Double OrderPrice;
     @OneToMany(mappedBy ="canteenworker")
     private List<Chef>chefs;
     @Column(name="OrderTime")

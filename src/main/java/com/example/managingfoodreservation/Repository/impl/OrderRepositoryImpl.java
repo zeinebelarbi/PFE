@@ -30,6 +30,16 @@ public class OrderRepositoryImpl implements OrderRepository {
         return Optional.empty();
     }
 
+    @Override
+    public Optional<Order> findByNumber(Integer number) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Order> findByOrder(Order order) {
+        return Optional.empty();
+    }
+
 
     @Override
     public boolean existsById(Integer integer) {

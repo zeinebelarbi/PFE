@@ -16,9 +16,9 @@ public enum ErrorCodes {
     CHEF_NOT_FOUND(6000),
     CHEF_NOT_VALID(6001),
     CANTEENWORKER_NOT_FOUND(7000),
-    CANTEENWORKER_NOT_VALID(7001),
+    CANTEENWORKER_NOT_VALID(7001);
   
-    private final int code;
+    private final int code ;
 
     ErrorCodes(int code) {
         this.code = code;

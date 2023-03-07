@@ -4,8 +4,6 @@ import com.example.managingfoodreservation.model.Dish;
 import lombok.Builder;
 import lombok.Data;
 
-
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Builder
@@ -14,12 +12,12 @@ public class DishDto {
     private Integer id;
     private String Dishname ;
 
-    private BigDecimal Quantity;
+    private Integer Quantity;
 
     private Instant OrderTime;
 
     private MenuDto menu;
-    public DishDto fromEntity(Dish dish){
+    public static DishDto fromEntity(Dish dish){
        if(dish ==null){
         return null;
     }
@@ -30,13 +28,14 @@ public class DishDto {
 
             .build();
 }
-public Dish toEntity (DishDto dishDto){
+public static Dish toEntity(DishDto dishDto){
     if(dishDto== null){
       return null;
     }
     Dish dish = new Dish();
     dish.setDishname(dishDto.getDishname());
     dish.setQuantity(dishDto.getQuantity());
+    dish.setOrderTime(dishDto.getOrderTime());
       return dish;
     }
 }

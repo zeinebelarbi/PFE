@@ -13,8 +13,8 @@ public class MenuDto {
     private Integer id;
     private List <DishDto>Dishes;
 
-    private CompanyDto Companyname;
-    public MenuDto fromEntity(Menu menu){
+
+    public static MenuDto fromEntity(Menu menu){
         if(menu== null){
             return null;
         }
@@ -22,7 +22,7 @@ public class MenuDto {
 
                 .build();
     }
-    public Menu toEntity (MenuDto menuDto){
+    public static Menu toEntity(MenuDto menuDto){
         Menu menu = new Menu();
         return menu;
     }
