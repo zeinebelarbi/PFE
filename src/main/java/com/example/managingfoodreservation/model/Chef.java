@@ -14,7 +14,7 @@ import java.time.Instant;
 @Builder
 
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=true)
+
 @Entity
 @Table(name="Chef")
 public class Chef extends AbstractEntity {

@@ -2,12 +2,14 @@ package com.example.managingfoodreservation.Repository.impl;
 
 import com.example.managingfoodreservation.Repository.DishRepository;
 import com.example.managingfoodreservation.model.Dish;
+import com.example.managingfoodreservation.model.Menu;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -172,4 +174,17 @@ public class DishRepositoryImpl implements DishRepository {
     public Optional<Dish> findByQuantity(Integer quantity) {
         return Optional.empty();
     }
+
+
+    @Override
+    public Optional<Dish> findByMenu(Menu menu) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Dish> findByorderTime(Instant orderTime) {
+        return Optional.empty();
+    }
+
+
 }

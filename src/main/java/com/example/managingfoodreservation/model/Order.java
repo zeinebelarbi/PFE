@@ -9,7 +9,7 @@ import java.time.Instant;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=true)
+
 @Entity
 @Table(name="Order")
 public class Order extends AbstractEntity {

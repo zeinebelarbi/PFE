@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@EqualsAndHashCode(callSuper=true)
+
 @Table(name="ListofOrders")
 public class ListofOrders extends AbstractEntity {
     @ManyToOne

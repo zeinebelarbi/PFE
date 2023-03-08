@@ -1,13 +1,7 @@
 package com.example.managingfoodreservation.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.*;
+import lombok.*;
 
 
 import java.time.Instant;
@@ -18,10 +12,12 @@ import java.util.List;
 @Builder(toBuilder = true)
 
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=true)
+@NoArgsConstructor
 @Entity
 @Table(name="Canteenworker")
-public class Canteenworker extends AbstractEntity {
+public class Canteenworker{
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column (name="id_canteenworker")
     private Integer id ;
     @Column(name="name")
@@ -34,7 +30,9 @@ public class Canteenworker extends AbstractEntity {
     @Column(name="OrderTime")
     private Instant OrderTime;
 
-    public Canteenworker(Integer id, Instant creationDate, Instant lastUpdateDate) {
+
+
+    /*public Canteenworker(Integer id, Instant creationDate, Instant lastUpdateDate) {
         super(id, creationDate, lastUpdateDate);
 
         this.creationDate = creationDate ;
@@ -44,7 +42,7 @@ public class Canteenworker extends AbstractEntity {
     public Canteenworker() {
 
         super();
-    }
+    }*/
 
 }
 

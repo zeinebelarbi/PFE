@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=true)
+
 @Entity
 @Table(name="Menu")
 public class Menu extends AbstractEntity {

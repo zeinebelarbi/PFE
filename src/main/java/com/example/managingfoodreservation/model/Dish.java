@@ -14,20 +14,21 @@ import java.time.Instant;
 @Builder
 
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=true)
+
 @Entity
-@Table(name="Dish")
+@Table(name="Dishes")
 public class Dish extends AbstractEntity {
-    @Column(name="Dishname")
-    private String Dishname ;
-    @Column(name="Quantity")
-    private Integer Quantity;
-    @Column(name="OrderTime")
-    private Instant OrderTime;
-    @ManyToOne()
-    @JoinColumn(name ="Menu")
+    @Column(name="Dishname",nullable = false)
+    private String dishname ;
+    @Column(name="Quantity",nullable = false)
+    private Integer quantity;
+    @Column(name="OrderTime",nullable = false)
+    private Instant orderTime;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="Menu",nullable = false)
     private Menu menu;
-    @Column (name="id_dish")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id ;
 
     Dish(Integer id, Instant creationDate, Instant lastUpdateDate) {
@@ -36,6 +37,7 @@ public class Dish extends AbstractEntity {
 
 
     public Dish() {
+
         super();
     }
 }

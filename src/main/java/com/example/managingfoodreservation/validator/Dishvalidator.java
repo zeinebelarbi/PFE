@@ -28,6 +28,10 @@ public class Dishvalidator {
         if (dishDto.getMenu()==null){
             errors.add("Let us know the dish's menu");
         }
+        if(dishDto.getId()==null){
+            errors.add("Let us know the dish's id");
+        }
+
 return errors;
     }
 }

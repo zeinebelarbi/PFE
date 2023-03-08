@@ -1,15 +1,16 @@
-package com.example.managingfoodreservation.services;
+package com.example.managingfoodreservation.services.impl;
 
-import com.example.managingfoodreservation.Repository.DishRepository;
+
 import com.example.managingfoodreservation.Repository.MenuRepository;
-import com.example.managingfoodreservation.Repository.impl.DishRepositoryImpl;
-import com.example.managingfoodreservation.dto.DishDto;
+
+import com.example.managingfoodreservation.Repository.impl.MenuRepositoryImpl;
 import com.example.managingfoodreservation.dto.MenuDto;
 import com.example.managingfoodreservation.exception.EntityNotFoundException;
 import com.example.managingfoodreservation.exception.ErrorCodes;
 import com.example.managingfoodreservation.exception.InvalidEntityException;
 
 import com.example.managingfoodreservation.model.Menu;
+import com.example.managingfoodreservation.services.MenuService;
 import com.example.managingfoodreservation.validator.Menuvalidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
+
 @Slf4j
-public abstract class MenuServiceImpl implements MenuService{
+@Service
+public abstract class MenuServiceImpl implements MenuService {
+    @Autowired
     private MenuRepository menuRepository;
     @Autowired
     public MenuServiceImpl(MenuRepository menuRepository){
@@ -62,11 +65,11 @@ public abstract class MenuServiceImpl implements MenuService{
     }
 
     @Override
-    public  List<DishDto> findAll() {
-        DishRepository repository = new DishRepositoryImpl();
+    public List<MenuDto> findAll() {
+        MenuRepository repository = new MenuRepositoryImpl();
         return repository.findAll()
                 .stream()
-                .map(DishDto::fromEntity).collect(Collectors.toList());
+                .map(MenuDto::fromEntity).collect(Collectors.toList());
     }
 
     @Override

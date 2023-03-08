@@ -6,12 +6,12 @@ import com.example.managingfoodreservation.model.Menu;
 import java.time.Instant;
 import java.util.List;
 
+
 public interface DishService {
     DishDto save(DishDto dto);
 
     DishDto findById(Integer id);
-
-    List<DishDto> findAll();
+    
 
     void delete(Integer id);
 
@@ -22,4 +22,6 @@ public interface DishService {
     DishDto findByMenu(Menu menu);
 
     DishDto findByOrderTime(Instant orderTime);
+
+    List<DishDto> findAll();
 }

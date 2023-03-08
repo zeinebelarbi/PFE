@@ -10,11 +10,11 @@ import java.time.Instant;
 @Data
 public class DishDto {
     private Integer id;
-    private String Dishname ;
+    private String dishname ;
 
-    private Integer Quantity;
+    private Integer quantity;
 
-    private Instant OrderTime;
+    public Instant orderTime;
 
     private MenuDto menu;
     public static DishDto fromEntity(Dish dish){
@@ -22,9 +22,9 @@ public class DishDto {
         return null;
     }
     return DishDto.builder()
-            .Dishname(dish.getDishname())
-            .Quantity(dish.getQuantity())
-            .OrderTime(dish.getOrderTime())
+            .dishname(dish.getDishname())
+            .quantity(dish.getQuantity())
+            .orderTime(dish.getOrderTime())
 
             .build();
 }

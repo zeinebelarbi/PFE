@@ -1,6 +1,5 @@
 package com.example.managingfoodreservation.services;
 
-import com.example.managingfoodreservation.dto.DishDto;
 import com.example.managingfoodreservation.dto.MenuDto;
 
 import java.util.List;
@@ -10,7 +9,7 @@ public interface MenuService {
 
     MenuDto findById(Integer id);
 
-    List<DishDto> findAll();
+    List<MenuDto> findAll();
 
     void delete(Integer id);
 }

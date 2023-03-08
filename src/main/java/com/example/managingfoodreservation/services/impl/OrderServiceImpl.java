@@ -29,9 +29,13 @@ import java.util.Optional;
 @Slf4j
 
 public class OrderServiceImpl implements OrderService {
+    @Autowired
     private OrderRepository orderRepository;
+    @Autowired
 private OrderRepositoryImpl orderRepositoryImpl;
+    @Autowired
 private StaffRepository staffRepository;
+    @Autowired
 private ListofOrdersRepository listofOrdersRepository;
 @Autowired
     public OrderServiceImpl(OrderRepository orderRepository,OrderRepositoryImpl orderRepositoryImpl, StaffRepository staffRepository, ListofOrdersRepository listofOrdersRepository) {

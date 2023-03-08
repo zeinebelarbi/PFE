@@ -86,6 +86,11 @@ public class CanteenworkerRepositoryImpl implements CanteenworkerRepository {
     }
 
     @Override
+    public Optional<Canteenworker> findByName(String name) {
+        return Optional.empty();
+    }
+
+    @Override
     public void flush() {
 
     }

@@ -14,5 +14,6 @@ public interface CanteenworkerRepository extends JpaRepository<Canteenworker,Int
     Optional<Canteenworker> findByOrderPrice(Double orderPrice);
 
     Optional<Canteenworker> findByOrderTime(Instant orderTime);
+    Optional<Canteenworker>findByName(String name);
 
 }

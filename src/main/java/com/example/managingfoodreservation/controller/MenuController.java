@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+
 @RestController
-public class MenuController implements MenuApi {
+public abstract class MenuController implements MenuApi {
     @Autowired
     private MenuService menuservice;
     @Autowired
@@ -36,12 +37,11 @@ public class MenuController implements MenuApi {
         return menuservice.findById(id);
     }
 
-
-
     @Override
     public List<DishDto> findAll() {
-        return menuservice.findAll();
+        return (List<DishDto>) menuservice;
     }
+
 
     @Override
     public void delete(Integer id) {

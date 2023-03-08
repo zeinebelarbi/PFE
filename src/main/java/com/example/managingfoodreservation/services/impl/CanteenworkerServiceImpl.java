@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public abstract class CanteenworkerServiceImpl implements CanteenworkerService {
+    @Autowired
     private CanteenworkerRepository canteenworkerRepository;
     @Autowired
     public CanteenworkerServiceImpl(CanteenworkerRepository canteenworkerRepository){
