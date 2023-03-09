@@ -7,7 +7,6 @@ import lombok.Data;
 
 
 import java.time.Instant;
-import java.util.List;
 
 @Builder
 @Data
@@ -21,7 +20,6 @@ public class OrderDto {
 
     private Staff staff;
 
-    private List<ListofOrdersDto>orders;
     private Order order;
 
     public static OrderDto fromEntity(Order order){
@@ -39,7 +37,6 @@ public class OrderDto {
             return null;
         }
         Staff staff = orderDto.getStaff();
-        List<ListofOrdersDto> orders = orderDto.getOrders();
         return Order.builder()
                 .name(orderDto.getName())
                 .date(orderDto.getDate())
@@ -56,4 +53,7 @@ public class OrderDto {
         this.order = order;
     }
 
+    public Order getOrders() {
+        return order;
+    }
 }

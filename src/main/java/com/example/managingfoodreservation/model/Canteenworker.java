@@ -32,17 +32,6 @@ public class Canteenworker{
 
 
 
-    /*public Canteenworker(Integer id, Instant creationDate, Instant lastUpdateDate) {
-        super(id, creationDate, lastUpdateDate);
-
-        this.creationDate = creationDate ;
-    }
-
-
-    public Canteenworker() {
-
-        super();
-    }*/
 
 }
 

@@ -1,21 +1,21 @@
 package com.example.managingfoodreservation.controller;
 
 
-import com.example.managingfoodreservation.controller.Api.DishApi;
 import com.example.managingfoodreservation.dto.DishDto;
 import com.example.managingfoodreservation.model.Menu;
 import com.example.managingfoodreservation.services.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.time.Instant;
 import java.util.List;
 
+import static com.example.managingfoodreservation.utils.Constants.APP_ROOT;
+
 @RestController
 @RequestMapping("/dishes")
-public abstract class DishController implements DishApi {
+public abstract class DishController  {
     private DishService dishService;
 
     @Autowired
@@ -24,48 +24,53 @@ public abstract class DishController implements DishApi {
 
     }
 
+    @PostMapping(value =APP_ROOT+ "/dish/create")
 
-    @Override
     public DishDto save(DishDto dto) {
         
         return dishService.save(dto);
     }
 
-    @Override
+    @GetMapping(value =APP_ROOT+"/dish/{id}")
+
     public DishDto findById(Integer id) {
         
         return dishService.findById(id);
     }
 
-    @Override
+    @GetMapping(value =APP_ROOT+"/dish/{Dish name}")
     public DishDto findByDishName(String dishname) {
         return dishService.findByDishName(dishname);
     }
 
-    @Override
+    @GetMapping(value =APP_ROOT+"/dish/{Quantity}")
     public DishDto findByQuantity(Integer quantity) {
         return dishService.findByQuantity(quantity);
     }
 
-    @Override
+
+    @GetMapping(value =APP_ROOT+"/dish/{menu}")
     public DishDto findByMenu(Menu menu) {
 
         return dishService.findByMenu (menu);
     }
 
-    @Override
+
+    @GetMapping(value =APP_ROOT+"/canteenworker/{OrderTime}")
     public DishDto findByOrderTime(Instant orderTime) {
 
         return dishService.findByOrderTime(orderTime);
     }
 
-    @Override
+
+    @GetMapping(value =APP_ROOT+"/dish/all")
     public List<DishDto> findAll() {
         return dishService.findAll();
     }
 
 
-    @Override
+
+    @DeleteMapping(value =APP_ROOT+"/dish/delete/{id}" )
     public void delete(Integer id) {
 
         dishService.delete(id);

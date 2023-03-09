@@ -2,22 +2,22 @@ package com.example.managingfoodreservation.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 
 @Data
 @Builder
-
+@NoArgsConstructor
 @AllArgsConstructor
 
 @Entity
 @Table(name="Dishes")
-public class Dish extends AbstractEntity {
+public class Dish  {
     @Column(name="Dishname",nullable = false)
     private String dishname ;
     @Column(name="Quantity",nullable = false)
@@ -29,15 +29,10 @@ public class Dish extends AbstractEntity {
     private Menu menu;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column (name="id_dish")
     private Integer id ;
 
-    Dish(Integer id, Instant creationDate, Instant lastUpdateDate) {
-        super(id, creationDate, lastUpdateDate);
-    }
 
 
-    public Dish() {
 
-        super();
-    }
 }

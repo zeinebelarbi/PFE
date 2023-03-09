@@ -22,9 +22,6 @@ public class Chefvalidator {
         if (chefDto.getCanteenworker()==null) {
             errors.add("Let us know the Chef's associated canteen worker");
         }
-        if (chefDto.getPreparedorder()==null) {
-            errors.add("Let us know the Chef's prepared order");
-        }
         if (chefDto.getDeliverTime()==null) {
             errors.add("Let us know the Chef's Deliver Time ");
         }

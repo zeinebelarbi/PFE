@@ -9,10 +9,11 @@ import java.time.Instant;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 @Table(name="Order")
-public class Order extends AbstractEntity {
+public class Order {
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column (name="id_order")
     private Integer id ;
 
@@ -33,6 +34,5 @@ public class Order extends AbstractEntity {
 
 
 
-    public void forEach(Object o) {
-    }
+
 }

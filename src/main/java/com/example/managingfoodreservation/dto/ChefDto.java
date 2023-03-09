@@ -2,13 +2,12 @@ package com.example.managingfoodreservation.dto;
 
 import com.example.managingfoodreservation.model.Canteenworker;
 import com.example.managingfoodreservation.model.Chef;
-import com.example.managingfoodreservation.model.ListofOrders;
 import lombok.Builder;
 import lombok.Data;
 
 
 import java.time.Instant;
-import java.util.List;
+
 
 @Builder
 @Data
@@ -17,7 +16,7 @@ public class ChefDto {
     private Integer id ;
     private String name;
 
-    private List<ListofOrders> preparedorder;
+
 
     private Canteenworker canteenworker  ;
 

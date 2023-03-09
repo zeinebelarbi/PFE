@@ -1,11 +1,7 @@
 package com.example.managingfoodreservation.services.impl;
 
-import com.example.managingfoodreservation.Repository.ListofOrdersRepository;
-
 import com.example.managingfoodreservation.Repository.OrderRepository;
 import com.example.managingfoodreservation.Repository.StaffRepository;
-import com.example.managingfoodreservation.Repository.impl.OrderRepositoryImpl;
-import com.example.managingfoodreservation.dto.ListofOrdersDto;
 import com.example.managingfoodreservation.dto.OrderDto;
 import com.example.managingfoodreservation.exception.EntityNotFoundException;
 import com.example.managingfoodreservation.exception.ErrorCodes;
@@ -32,17 +28,13 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
-private OrderRepositoryImpl orderRepositoryImpl;
-    @Autowired
 private StaffRepository staffRepository;
-    @Autowired
-private ListofOrdersRepository listofOrdersRepository;
+
 @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository,OrderRepositoryImpl orderRepositoryImpl, StaffRepository staffRepository, ListofOrdersRepository listofOrdersRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, StaffRepository staffRepository) {
         this.orderRepository = orderRepository;
         this.staffRepository = staffRepository;
-        this.listofOrdersRepository = listofOrdersRepository;
-        this.orderRepositoryImpl=orderRepositoryImpl;
+    
     }
 
     @Override
@@ -59,16 +51,8 @@ private ListofOrdersRepository listofOrdersRepository;
             throw new EntityNotFoundException("No Staff with the ID " + dto.getStaff().getId() + "is Found", ErrorCodes.STAFF_NOT_FOUND);
         }
         List<String> orderErrors = new ArrayList<>();
-        if (dto.getOrders() != null) {
-            dto.getOrders().forEach(orders -> {
-                if (orders.getOrder() != null) {
-                    Optional<Order> order = orderRepository.findById(orders.getOrder().getId());
-                    if (order.isEmpty()) {
-                        orderErrors.add("The order with the ID" + orders.getOrder().getId() + "is not found");
-                    }
-                }
-            });
-        }
+
+
         if (!orderErrors.isEmpty()) {
             log.warn("");
             throw new InvalidEntityException("The order doesn't exist ", ErrorCodes.ORDER_NOT_FOUND, orderErrors);
@@ -132,11 +116,7 @@ private ListofOrdersRepository listofOrdersRepository;
                 ));
     }
 
-    @Override
-    public List<ListofOrdersDto> findAll() {
-
-    return null;
-    }
+ 
 
     @Override
     public OrderDto findByStaff(Staff staff) {

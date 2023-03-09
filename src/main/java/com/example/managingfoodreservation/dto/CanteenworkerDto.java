@@ -15,7 +15,7 @@ public class CanteenworkerDto {
     public CanteenworkerDto fromEntity;
     private String name;
     private Integer id;
-    private List<ListofOrdersDto> orders;
+
     private Double orderPrice;
     private List<ChefDto> chefs;
     private Instant orderTime;

@@ -3,66 +3,66 @@ package com.example.managingfoodreservation.controller;
 
 
 
-import com.example.managingfoodreservation.controller.Api.CanteenworkerApi;
+
 import com.example.managingfoodreservation.dto.CanteenworkerDto;
 
 import com.example.managingfoodreservation.services.CanteenworkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
 import java.util.List;
 
+import static com.example.managingfoodreservation.utils.Constants.APP_ROOT;
+
 @RestController
-public abstract class CanteenworkerController implements CanteenworkerApi {
+public abstract class CanteenworkerController{
 @Autowired
 private CanteenworkerService canteenworkerservice;
-@Autowired
-public CanteenworkerService getCanteenworkerservice(){
 
-    return canteenworkerservice;
-}
 @Autowired
 public CanteenworkerController(CanteenworkerService canteenworkerservice){
     this.canteenworkerservice=canteenworkerservice;
 
 }
-    @Override
+    @PostMapping(value =APP_ROOT+ "/canteenworker/create")
     public CanteenworkerDto save(CanteenworkerDto dto) {
 
     return canteenworkerservice.save(dto);
     }
 
-    @Override
+    @GetMapping(value =APP_ROOT+"/canteenworker/{name}")
     public CanteenworkerDto findByName(String name) {
 
     return canteenworkerservice.findByName(name);
     }
-
-    @Override
+    @GetMapping(value =APP_ROOT+"/canteenworker/{id}")
     public CanteenworkerDto findById(Integer id) {
 
     return canteenworkerservice.findById(id);
     }
 
-    @Override
+    @GetMapping(value =APP_ROOT+"/canteenworker/{OrderPrice}")
     public CanteenworkerDto findByOrderPrice(Double OrderPrice) {
         return canteenworkerservice.findByOrderPrice(OrderPrice);
     }
 
-    @Override
+    @GetMapping(value =APP_ROOT+"/canteenworker/{OrderTime}")
     public CanteenworkerDto findByOrderTime(Instant OrderTime) {
         return canteenworkerservice.findByOrderTime(OrderTime);
     }
 
-    @Override
+    @GetMapping(value =APP_ROOT+"/canteenworker/all")
     public List<CanteenworkerDto> findAll() {
 
     return canteenworkerservice.findAll();
     }
 
-    @Override
+    @DeleteMapping(value =APP_ROOT+"/canteenworker/delete/{id}" )
     public void delete(Integer id) {
 
     canteenworkerservice.delete(id);

@@ -4,23 +4,23 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-
-import java.time.Instant;
 import java.util.Date;
 
 
 @Data
 @Builder
-
+@NoArgsConstructor
 @AllArgsConstructor
 
 @Entity
 @Table (name="User")
-public class Staff extends AbstractEntity {
-    @Column (name="id_User",insertable=false, updatable=false)
+public class Staff  {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column (name="id_User",insertable=false, updatable=false)
     private Integer id ;
 
     @Column
@@ -41,15 +41,6 @@ public class Staff extends AbstractEntity {
 
   
 
-    Staff(Integer id, Instant creationDate, Instant lastUpdateDate) {
-
-        super(id, creationDate, lastUpdateDate);
-    }
-
-    public Staff() {
-
-        super();
-    }
 
 
 }
