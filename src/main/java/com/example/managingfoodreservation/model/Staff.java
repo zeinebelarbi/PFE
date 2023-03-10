@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Data
@@ -23,7 +24,7 @@ public class Staff  {
     @Column (name="id_User",insertable=false, updatable=false)
     private Integer id ;
 
-    @Column
+    @Column(name="Firstname")
     private String Firstname;
 
     @Column(name="Lastname")
@@ -36,6 +37,9 @@ public class Staff  {
     private String phone;
     @Column(name="birth_date")
     private Date birth_date;
+    @OneToMany(mappedBy ="staff")
+    private List<Order> orders;
+
 
 
 

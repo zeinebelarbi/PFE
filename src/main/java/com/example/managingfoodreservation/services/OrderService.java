@@ -17,7 +17,6 @@ public interface OrderService {
     OrderDto findByDate(Instant date);
     OrderDto findByNumber(Integer number);
     OrderDto findByStaff(Staff staff);
-    OrderDto findByOrder(Order order);
     void delete (Integer id_order);
 
 }

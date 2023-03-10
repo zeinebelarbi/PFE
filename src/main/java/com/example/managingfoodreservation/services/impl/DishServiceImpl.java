@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class DishServiceImpl implements DishService {
+public abstract class DishServiceImpl implements DishService {
 
     private static DishRepository dishRepository = null;
     @Autowired

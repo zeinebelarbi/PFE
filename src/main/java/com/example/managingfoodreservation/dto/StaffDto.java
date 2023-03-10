@@ -29,7 +29,7 @@ public class StaffDto {
 
  
 
-    public StaffDto fromEntity(Staff staff) {
+    public static StaffDto fromEntity(Staff staff) {
         if (staff == null) {
             return null;
         }
@@ -43,7 +43,7 @@ public class StaffDto {
                 .build();
     }
 
-    public Staff toEntity(StaffDto staffDto) {
+    public static Staff toEntity(StaffDto staffDto) {
         if (staffDto == null) {
             return null;
         }

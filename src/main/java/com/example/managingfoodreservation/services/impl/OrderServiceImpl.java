@@ -24,11 +24,11 @@ import java.util.Optional;
 @Service
 @Slf4j
 
-public class OrderServiceImpl implements OrderService {
+public abstract class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
-private StaffRepository staffRepository;
+    private StaffRepository staffRepository;
 
 @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, StaffRepository staffRepository) {
@@ -121,23 +121,18 @@ private StaffRepository staffRepository;
     @Override
     public OrderDto findByStaff(Staff staff) {
 
-    return null;
-    }
-
-    @Override
-    public OrderDto findByOrder(Order order) {
-
-
-        if (order == null) {
-            log.error("The order  is Null");
+        if (staff == null) {
+            log.error("The staff associated to the order is Null");
             return null;
         }
-        return orderRepository.findByOrder(order)
+        return orderRepository.findByStaff(staff)
                 .map(OrderDto::fromEntity)
                 .orElseThrow(()->new EntityNotFoundException(
-                        "No order has been found "+order,ErrorCodes.ORDER_NOT_FOUND
+                        "No order associated to the staff  has been found "+staff,ErrorCodes.ORDER_NOT_FOUND
                 ));
     }
+
+
 
     @Override
     public void delete(Integer id) {

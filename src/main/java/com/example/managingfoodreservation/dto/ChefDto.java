@@ -23,7 +23,7 @@ public class ChefDto {
     private Instant DeliverTime;
 
 
-    public ChefDto fromEntity (Chef chef){
+    public static ChefDto fromEntity(Chef chef){
         if(chef ==null){
             return null;
         }
@@ -33,12 +33,16 @@ public class ChefDto {
                 .canteenworker(chef.getCanteenworker())
                 .build();
     }
-    public Chef toEntity (ChefDto chefDto){
+    public static Chef toEntity(ChefDto chefDto){
         if(chefDto ==null){
             return null;
         }
         Chef chef = new Chef();
         chef.setName(chefDto.getName());
            return chef;
+    }
+
+    public Chef get() {
+        return get();
     }
 }

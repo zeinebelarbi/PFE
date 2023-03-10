@@ -1,6 +1,7 @@
 package com.example.managingfoodreservation.Repository;
 
 import com.example.managingfoodreservation.model.Order;
+import com.example.managingfoodreservation.model.Staff;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.Instant;
@@ -14,4 +15,6 @@ public interface OrderRepository extends JpaRepository< Order,Integer> {
  Optional<Order> findByNumber(Integer number);
 
  Optional<Order> findByOrder(Order order);
+
+  Optional<Order> findByStaff(Staff staff);
 }

@@ -9,10 +9,7 @@ import com.example.managingfoodreservation.dto.CanteenworkerDto;
 import com.example.managingfoodreservation.services.CanteenworkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.util.List;
@@ -20,8 +17,9 @@ import java.util.List;
 import static com.example.managingfoodreservation.utils.Constants.APP_ROOT;
 
 @RestController
+@RequestMapping("/canteenworkers")
 public abstract class CanteenworkerController{
-@Autowired
+
 private CanteenworkerService canteenworkerservice;
 
 @Autowired
@@ -30,7 +28,7 @@ public CanteenworkerController(CanteenworkerService canteenworkerservice){
 
 }
     @PostMapping(value =APP_ROOT+ "/canteenworker/create")
-    public CanteenworkerDto save(CanteenworkerDto dto) {
+    public CanteenworkerDto save(@RequestBody CanteenworkerDto dto) {
 
     return canteenworkerservice.save(dto);
     }

@@ -2,6 +2,7 @@ package com.example.managingfoodreservation.Repository.impl;
 
 import com.example.managingfoodreservation.Repository.OrderRepository;
 import com.example.managingfoodreservation.model.Order;
+import com.example.managingfoodreservation.model.Staff;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +38,11 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Optional<Order> findByOrder(Order order) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Order> findByStaff(Staff staff) {
         return Optional.empty();
     }
 

@@ -14,14 +14,14 @@ import static com.example.managingfoodreservation.utils.Constants.APP_ROOT;
 @RestController
 @RequestMapping("/menu")
 public abstract class MenuController{
-    @Autowired
+
     private MenuService menuservice;
     @Autowired
     public MenuController(MenuService menuservice){
         this.menuservice=menuservice;
     }
     @PostMapping(value =APP_ROOT+ "/menu/create")
-    public MenuDto save(MenuDto dto) {
+    public MenuDto save(@RequestBody MenuDto dto) {
 
         return menuservice.save(dto);
     }

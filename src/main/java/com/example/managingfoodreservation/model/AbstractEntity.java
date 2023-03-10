@@ -20,7 +20,7 @@ public class AbstractEntity implements Serializable {
     @GeneratedValue()
     private Integer id;
     @CreatedDate
-    @Column(name="creationDate")
+    @Column(name="creationDate",nullable=false, updatable = false)
     @JsonIgnore
     Instant creationDate;
     @LastModifiedDate
@@ -35,6 +35,7 @@ public class AbstractEntity implements Serializable {
         this.creationDate = creationDate;
         this.lastUpdateDate = lastUpdateDate;
     }
+
 
 }
 
