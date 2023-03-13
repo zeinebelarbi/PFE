@@ -9,7 +9,9 @@ import com.example.managingfoodreservation.dto.CanteenworkerDto;
 import com.example.managingfoodreservation.services.CanteenworkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 import org.springframework.web.bind.annotation.*;
+
 
 import java.time.Instant;
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
 import static com.example.managingfoodreservation.utils.Constants.APP_ROOT;
 
 @RestController
+
 @RequestMapping("/canteenworkers")
 public abstract class CanteenworkerController{
 
