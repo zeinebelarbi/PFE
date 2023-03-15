@@ -1,9 +1,7 @@
 package com.example.managingfoodreservation.model;
-
-import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.Instant;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +16,7 @@ import java.util.List;
 public class Menu  {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column (name="id_menu")
+    @Column(name="id_menu")
     private Integer id ;
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)

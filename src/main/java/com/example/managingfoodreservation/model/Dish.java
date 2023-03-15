@@ -1,12 +1,13 @@
 package com.example.managingfoodreservation.model;
 
-import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.time.Instant;
 
 
@@ -25,7 +26,7 @@ public class Dish  {
     @Column(name="OrderTime",nullable = false)
     private Instant orderTime;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="Menu",nullable = false)
+    @JoinColumn(name ="Menu",nullable = true)
     private Menu menu;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -3,6 +3,8 @@ package com.example.managingfoodreservation.handlers;
 import com.example.managingfoodreservation.exception.EntityNotFoundException;
 import com.example.managingfoodreservation.exception.ErrorCodes;
 import com.example.managingfoodreservation.exception.InvalidEntityException;
+import com.example.managingfoodreservation.exception.InvalidOperationException;
+import java.util.Collections;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,7 +40,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
                 .httpCode(badRequest.value())
                 .message(exception.getMessage())
-                .errors(Collections.singletonList(exception.getErrorCode().toString()))
+                .errors(Collections.singletonList("Login and/or password is incorrect"))
                 .build();
 
         return new ResponseEntity<>(errorDto, badRequest);

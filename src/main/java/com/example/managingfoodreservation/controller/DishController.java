@@ -4,7 +4,6 @@ package com.example.managingfoodreservation.controller;
 import com.example.managingfoodreservation.dto.DishDto;
 import com.example.managingfoodreservation.model.Menu;
 import com.example.managingfoodreservation.services.DishService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -20,8 +19,7 @@ import java.util.List;
 import static com.example.managingfoodreservation.utils.Constants.APP_ROOT;
 
 @RestController
-@Api(APP_ROOT+"/dishes")
-@RequestMapping("/dishes")
+@RequestMapping(APP_ROOT+"/dishes")
 public abstract class DishController  {
 
     private DishService dishService;
@@ -32,7 +30,7 @@ public abstract class DishController  {
 
     }
 
-    @PostMapping(value =APP_ROOT+ "/dish/create")
+    @PostMapping(value =APP_ROOT+ "/create")
     @ApiOperation(value ="Save a dish",notes = "This method allow to add or to update a dish ",response= DishDto.class)
     @ApiResponses(value ={
             @ApiResponse(code=200,message="The dish is been created or updated" ),
@@ -98,7 +96,7 @@ public abstract class DishController  {
         return dishService.findByOrderTime(orderTime);
     }
 
-    @GetMapping(value =APP_ROOT+"/dish/all")
+    @GetMapping(value=APP_ROOT+"/dish/all")
 
     @ApiOperation(value ="Give the list of dishes",notes = "This method allow to search and give the list of available dishes ",responseContainer ="List<DishDto>")
     @ApiResponses(value = {

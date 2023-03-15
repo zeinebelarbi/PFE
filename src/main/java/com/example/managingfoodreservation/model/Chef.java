@@ -1,8 +1,9 @@
 package com.example.managingfoodreservation.model;
 
-import jakarta.persistence.*;
+
 import lombok.*;
 
+import javax.persistence.*;
 import java.time.Instant;
 
 
@@ -25,7 +26,7 @@ public class Chef {
     @ManyToOne
     @JoinColumn(name ="Canteenworker ",insertable = false,updatable = false)
     private Canteenworker canteenworker  ;
-    @Column (name ="DeliverTime")
+    @Column(name ="DeliverTime")
     private Instant DeliverTime;
 
 

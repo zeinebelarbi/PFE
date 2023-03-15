@@ -2,16 +2,20 @@ package com.example.managingfoodreservation.handlers;
 
 
 import com.example.managingfoodreservation.exception.ErrorCodes;
-import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-           @Setter
-           @NoArgsConstructor
-           @AllArgsConstructor
-           @Builder
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ErrorDto {
 private  Integer httpCode;
 private ErrorCodes code;

@@ -34,7 +34,7 @@ public abstract class CanteenworkerServiceImpl implements CanteenworkerService {
         List<String> errors= Canteenworkervalidator.validate(dto);
         if(!errors.isEmpty()){
             log.error("The Canteenworker is not valid{}",dto);
-            throw new InvalidEntityException("The Canteenworker is not valid ", ErrorCodes.CANTEENWORKER_NOT_VALID,errors);
+            throw new InvalidEntityException("The Canteenworker is not valid ", ErrorCodes.CANTEENWORKER_NOT_FOUND,errors);
         }
 
         return CanteenworkerDto.fromEntity(

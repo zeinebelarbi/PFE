@@ -1,11 +1,11 @@
 package com.example.managingfoodreservation.model;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -16,11 +16,11 @@ import java.util.List;
 @AllArgsConstructor
 
 @Entity
-@Table (name="User")
+@Table(name="User")
 public class Staff  {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
     @Column (name="id_User",insertable=false, updatable=false)
     private Integer id ;
 
