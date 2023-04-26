@@ -1,27 +1,28 @@
 package com.example.managingfoodreservation.services;
 
-import com.example.managingfoodreservation.dto.DishDto;
-import com.example.managingfoodreservation.model.Menu;
 
-import java.time.Instant;
+import com.example.managingfoodreservation.wrapper.DishWrapper;
+import org.springframework.http.ResponseEntity;
+
 import java.util.List;
-
+import java.util.Map;
 
 public interface DishService {
-    DishDto save(DishDto dto);
 
-    DishDto findById(Integer id);
-    
 
-    void delete(Integer id);
+    ResponseEntity<String> addNewDish(Map<String, String> requestMap);
 
-    DishDto findByDishName(String dishname);
+    ResponseEntity<List<DishWrapper>> getAllDish();
 
-    DishDto findByQuantity(Integer quantity);
+    ResponseEntity<String> updateDish(Map<String, String> requestMap);
 
-    DishDto findByMenu(Menu menu);
+    ResponseEntity<String> deleteDish(Integer iddish);
 
-    DishDto findByOrderTime(Instant orderTime);
+    ResponseEntity<String> updateStatus(Map<String, String> requestMap);
 
-    List<DishDto> findAll();
+
+
+    ResponseEntity<List<DishWrapper>> getByMenuCategory(Integer iddish);
+
+    ResponseEntity<DishWrapper> getDishById(Integer iddish);
 }

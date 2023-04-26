@@ -1,38 +1,45 @@
 package com.example.managingfoodreservation.model;
 
 
-import lombok.AllArgsConstructor;
-
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.time.Instant;
+import java.io.Serializable;
 
+
+@NamedQuery(name=" Dish.getAllDish",query = "select new  com.example.managingfoodreservation.wrapper.DishWrapper(d.iddish ,d.dishname,d.description,d.price,d.status,d.menuCategory.idMenuCategory,d.menuCategory.menucategoryname from Dish")
+@NamedQuery(name=" Dish.updateDishStatus",query = "update Dish d set d.status=:status where d.iddish=:iddish ")
+@NamedQuery(name=" Dish.getDishByMenuCategory",query = "select new  com.example.managingfoodreservation.wrapper.DishWrapper(d.iddish,d.dishname)from Dish d where d.menuCategory.idMenuCategory=:id and d.status='true'")
+@NamedQuery(name="Dish.getDishById",query="select new com.example.managingfoodreservation.wrapper.DishWrapper(d.iddish,d.dishname,d.description,d.price)from Dish d where d.iddish=:iddish ")
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-
 @Entity
-@Table(name="Dishes")
-public class Dish  {
-    @Column(name="Dishname",nullable = false)
-    private String dishname ;
-    @Column(name="Quantity",nullable = false)
-    private Integer quantity;
-    @Column(name="OrderTime",nullable = false)
-    private Instant orderTime;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="Menu",nullable = true)
-    private Menu menu;
+@DynamicInsert
+@DynamicUpdate
+@Table(name="Dish")
+public class Dish implements Serializable {
+    public static final long serialVersionUID =123456L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name="id_dish")
-    private Integer id ;
 
+    @Column(name ="id")
+    private Integer iddish;
+    @Column(name ="name")
+    private String dishname;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+     @JoinColumn(name="menucategory",nullable = false)
+    private MenuCategory menuCategory;
+    @Column(name ="descrition")
+    private String desription;
+
+    @Column(name ="price")
+    private Integer price;
+
+    @Column(name="status")
+    private String status;
 
 
 

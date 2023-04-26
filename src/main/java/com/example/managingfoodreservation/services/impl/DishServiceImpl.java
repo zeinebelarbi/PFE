@@ -1,131 +1,193 @@
 package com.example.managingfoodreservation.services.impl;
+
+
+import com.example.managingfoodreservation.JWT.JwtFilter;
 import com.example.managingfoodreservation.Repository.DishRepository;
 
-import com.example.managingfoodreservation.Repository.impl.DishRepositoryImpl;
 
-import com.example.managingfoodreservation.dto.DishDto;
-import com.example.managingfoodreservation.exception.EntityNotFoundException;
-import com.example.managingfoodreservation.exception.ErrorCodes;
-import com.example.managingfoodreservation.exception.InvalidEntityException;
+import com.example.managingfoodreservation.constants.MenuConstants;
 import com.example.managingfoodreservation.model.Dish;
-import com.example.managingfoodreservation.model.Menu;
+import com.example.managingfoodreservation.model.MenuCategory;
 import com.example.managingfoodreservation.services.DishService;
-import com.example.managingfoodreservation.validator.Dishvalidator;
+
+import com.example.managingfoodreservation.utils.MenuUtils;
+import com.example.managingfoodreservation.wrapper.DishWrapper;
+import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
-@Service
 @Slf4j
-public abstract class DishServiceImpl implements DishService {
-
-    private static DishRepository dishRepository = null;
+@Service
+public class DishServiceImpl implements DishService {
     @Autowired
-    public DishServiceImpl(DishRepository dishRepository) {
+    DishRepository dishRepository;
+    @Autowired
+    JwtFilter jwtFilter;
 
-        this.dishRepository = dishRepository;
-    }
 
     @Override
-    public DishDto save(DishDto dto) {
-        List<String> errors= Dishvalidator.validate(dto);
-        if(!errors.isEmpty()){
-            log.error("The Dish is not valid{}",dto);
-            throw new InvalidEntityException("The Dish is not valid ", ErrorCodes.DISH_NOT_VALID,errors);
+    public ResponseEntity<String> addNewDish(Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin()) {
+                if (validateDishMap(requestMap, false)) {
+                    dishRepository.save(getDishFromMap(requestMap, false));
+                    return MenuUtils.getResponseEntity("Dish Added Successfully", HttpStatus.OK);
+                }
+            } else {
+                return MenuUtils.getResponseEntity(MenuConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+        }
+        return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+    private boolean validateDishMap(Map<String, String> requestMap, boolean validateId) {
+        if (requestMap.containsKey("name")) {
+
+            if (requestMap.containsKey("id") && validateId) {
+                return true;
+            } else if (!validateId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Dish getDishFromMap(Map<String, String> requestMap, boolean isAdd) {
+        MenuCategory menuCategory = new MenuCategory();
+        menuCategory.setIdMenuCategory(Integer.parseInt(requestMap.get("MenuCategoryId")));
+        Dish dish = new Dish();
+        if (isAdd) {
+            dish.setIddish(Integer.parseInt(requestMap.get("DishId")));
+        } else {
+            dish.setStatus("true");
         }
 
-        return DishDto.fromEntity(
-                dishRepository.save(
-                        DishDto.toEntity(dto)
-                )
-        );
+
+        dish.setMenuCategory(menuCategory);
+        dish.setDishname(requestMap.get("name"));
+        dish.setDesription(requestMap.get("description"));
+        dish.setPrice(Integer.parseInt(requestMap.get("Dishprice")));
+
+        return dish;
     }
 
     @Override
-    public DishDto findById(Integer id) {
-        if(id ==null){
-            log.error("The Dish's Id is invalid");
-            return null;
+    public ResponseEntity<List<DishWrapper>> getAllDish() {
+        try {
+            if (!Strings.isNullOrEmpty(filterValue) && filterValue.equalsIgnoreCase("true")) {
+                log.info("Inside if ");
+
+                return new ResponseEntity<>(dishRepository.getAllDish(), HttpStatus.OK);
+            }
+            return new ResponseEntity(dishRepository.findAll(), HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-
-        Optional<Dish> dish = dishRepository.findById(id);
-        DishDto dto = DishDto.fromEntity(dish.get());
-        return Optional.of(dto).orElseThrow(()->
-                new EntityNotFoundException(
-                        "No Dish with the Id ="+id+"exists", ErrorCodes.DISH_NOT_FOUND)
-        );
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
-
     @Override
-    public void delete(Integer id) {
-        if(id==null){
-            log.error("The Dish is null");
-            return;
+    public ResponseEntity<String> updateDish(Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin()) {
+
+                if (validateDishMap(requestMap, true)) {
+                    Optional<Dish> optional = dishRepository.findById(Integer.parseInt(requestMap.get("id")));
+                    if (!optional.isEmpty()) {
+                        Dish dish = getDishFromMap(requestMap, true);
+                        dish.setStatus(optional.get().getStatus());
+                        dishRepository.save(dish);
+                        return MenuUtils.getResponseEntity("Dish updated successfully", HttpStatus.OK);
+                    } else {
+                        return MenuUtils.getResponseEntity("Dish  id doesn't exist", HttpStatus.OK);
+                    }
+                }
+                return MenuUtils.getResponseEntity(MenuConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+            } else {
+                return MenuUtils.getResponseEntity(MenuConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        dishRepository.deleteById(id);
+        return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
     @Override
-    public DishDto findByDishName(String dishname) {
-        if (!StringUtils.hasLength(dishname)) {
-            log.error("The dish's name is Null");
-            return null;
+    public ResponseEntity<String> deleteDish(Integer iddish) {
+        try {
+            if (jwtFilter.isAdmin()) {
+                Optional optional = dishRepository.findById(iddish);
+                if (!optional.isEmpty()) {
+                    dishRepository.deleteById(iddish);
+                    return MenuUtils.getResponseEntity("Dish deleted Successfully ", HttpStatus.OK);
+                }
+                return MenuUtils.getResponseEntity("Dish Id does not exist ", HttpStatus.OK);
+            } else {
+                return MenuUtils.getResponseEntity(MenuConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        return dishRepository.findByDishName(dishname)
-                .map(DishDto::fromEntity)
-                .orElseThrow(()->new EntityNotFoundException(
-                        "No dish with this Name has been found "+dishname,ErrorCodes.DISH_NOT_FOUND
-                ));
+        return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
-    public DishDto findByQuantity(Integer quantity) {
-        if (!StringUtils.hasLength(quantity.toString())){
-            log.error("The quantity is not found");
-            return null;
+    public ResponseEntity<String> updateStatus(Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin()) {
+                Optional optional = dishRepository.findById(Integer.parseInt(requestMap.get("id")));
+                if (!optional.isEmpty()) {
+                    dishRepository.updateDishStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
+                    return MenuUtils.getResponseEntity("Dish status Updated Successfuly", HttpStatus.OK);
+
+                }
+                return MenuUtils.getResponseEntity("Dish id does not exist", HttpStatus.OK);
+
+
+            } else {
+                return MenuUtils.getResponseEntity(MenuConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        Optional<Dish> dish=dishRepository.findByQuantity(quantity);
-        return Optional.of(DishDto.fromEntity(dish.get())).orElseThrow(()->new EntityNotFoundException(
-                "No dish with this Quantity"+quantity+"is Found",ErrorCodes.DISH_NOT_FOUND));
+        return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+
     @Override
-    public DishDto findByMenu(Menu menu) {
-        if (!StringUtils.hasLength(menu.toString())){
-            log.error("The menu is not found");
-            return null;
+    public ResponseEntity<List<DishWrapper>> getByMenuCategory(Integer iddish) {
+        try {
+            return new ResponseEntity<>(DishRepository.getDishByMenuCategory(iddish), HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        Optional<Dish> dish=dishRepository.findByMenu(menu);
-        return Optional.of(DishDto.fromEntity(dish.get())).orElseThrow(()->new EntityNotFoundException(
-                "No dish in this "+menu+"is Found",ErrorCodes.DISH_NOT_FOUND));
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
-    public DishDto findByOrderTime(Instant orderTime) {
-        if (!StringUtils.hasLength(orderTime.toString())){
-            log.error("The orderTime is not found");
-            return null;
+    public ResponseEntity<DishWrapper> getDishById(Integer iddish) {
+        try {
+return new ResponseEntity<>(DishRepository.getDishById(iddish),HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        Optional<Dish> dish=dishRepository.findByorderTime(orderTime);
-        return Optional.of(DishDto.fromEntity(dish.get())).orElseThrow(()->new EntityNotFoundException(
-                "No dish with this OrderTime"+orderTime+"is Found",ErrorCodes.DISH_NOT_FOUND));
-    }
-
-    @Override
-    public List<DishDto> findAll() {
-        DishRepository repository = new DishRepositoryImpl();
-        return repository.findAll()
-                .stream()
-                .map(DishDto::fromEntity).collect(Collectors.toList());
+        return new ResponseEntity<>(new DishWrapper(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
+
+
