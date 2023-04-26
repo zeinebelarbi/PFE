@@ -12,7 +12,7 @@ public interface DishService {
 
     ResponseEntity<String> addNewDish(Map<String, String> requestMap);
 
-    ResponseEntity<List<DishWrapper>> getAllDish();
+    ResponseEntity<List<DishWrapper>> getAllDish(String filterValue);
 
     ResponseEntity<String> updateDish(Map<String, String> requestMap);
 

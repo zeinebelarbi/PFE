@@ -1,6 +1,6 @@
 package com.example.managingfoodreservation.controller;
 
-import com.example.managingfoodreservation.model.Dish;
+
 
 import com.example.managingfoodreservation.wrapper.DishWrapper;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,10 @@ public interface DishController {
     @PostMapping(path="/add")
     ResponseEntity<String> addNewDish(@RequestBody Map<String, String> requestMap);
     @GetMapping(path ="/get")
-    ResponseEntity<List<DishWrapper>>getAllDish();
+
+
+    ResponseEntity<List<DishWrapper>> getAllDish(@RequestParam(value = "filterValue", required = false) String filterValue);
+
     @PostMapping(path = "/update ")
     ResponseEntity<String>updateDish(@RequestBody Map<String, String> requestMap);
     @PostMapping(path = "/delete/{iddish} ")

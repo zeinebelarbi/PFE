@@ -85,7 +85,7 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public ResponseEntity<List<DishWrapper>> getAllDish() {
+    public ResponseEntity<List<DishWrapper>> getAllDish(String filterValue) {
         try {
             if (!Strings.isNullOrEmpty(filterValue) && filterValue.equalsIgnoreCase("true")) {
                 log.info("Inside if ");
@@ -172,7 +172,7 @@ public class DishServiceImpl implements DishService {
     @Override
     public ResponseEntity<List<DishWrapper>> getByMenuCategory(Integer iddish) {
         try {
-            return new ResponseEntity<>(DishRepository.getDishByMenuCategory(iddish), HttpStatus.OK);
+            return new ResponseEntity<>(dishRepository.getDishByMenuCategory(iddish), HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -182,7 +182,7 @@ public class DishServiceImpl implements DishService {
     @Override
     public ResponseEntity<DishWrapper> getDishById(Integer iddish) {
         try {
-return new ResponseEntity<>(DishRepository.getDishById(iddish),HttpStatus.OK);
+return new ResponseEntity<>(dishRepository.getDishById(iddish),HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

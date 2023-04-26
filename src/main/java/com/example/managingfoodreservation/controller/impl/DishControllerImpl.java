@@ -38,11 +38,13 @@ public class DishControllerImpl implements DishController {
         return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+
+
     @Override
-    public ResponseEntity<List<DishWrapper>> getAllDish() {
+    public ResponseEntity<List<DishWrapper>> getAllDish(@RequestParam(value = "filterValue", required = false) String filterValue) {
         try {
 
-            return dishService.getAllDish();
+            return dishService.getAllDish(filterValue);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -95,7 +97,7 @@ return dishService. getByMenuCategory(iddish);
     @Override
     public ResponseEntity<DishWrapper> getDishById(Integer iddish) {
         try{
-   return DishService.getDishById(iddish);
+   return dishService.getDishById(iddish);
         }catch(Exception ex){
 
             ex.printStackTrace();
