@@ -28,7 +28,7 @@ public class DishControllerImpl implements DishController {
 
 
     @Override
-    public ResponseEntity<String> addNewDish(Map<String, String> requestMap) {
+    public ResponseEntity<String> addNewDish(Map<String,String> requestMap) {
         try {
             return dishService.addNewDish(requestMap);
         } catch (Exception ex) {

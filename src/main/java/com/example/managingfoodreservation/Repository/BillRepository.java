@@ -9,5 +9,5 @@ import java.util.List;
 public interface BillRepository extends JpaRepository<Bill,Integer> {
     List<Bill> getAllBills();
 
-    List<Bill> getAllBillByUserName(@Param("username") String username);
+    List<Bill> getAllBillByUsername(@Param("username") String username);
 }

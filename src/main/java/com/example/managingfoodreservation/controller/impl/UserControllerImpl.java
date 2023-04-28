@@ -3,7 +3,6 @@ import com.example.managingfoodreservation.constants.MenuConstants;
 import com.example.managingfoodreservation.controller.UserController;
 import com.example.managingfoodreservation.services.UserService;
 import com.example.managingfoodreservation.utils.MenuUtils;
-import com.example.managingfoodreservation.wrapper.DishWrapper;
 import com.example.managingfoodreservation.wrapper.UserWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,16 +22,16 @@ public class UserControllerImpl implements UserController {
     private UserService userservice;
 
     @Autowired
-    public UserControllerImpl(UserService staffservice) {
+    public UserControllerImpl(UserService userservice) {
 
-        this.userservice = staffservice;
+        this.userservice = userservice;
     }
 
 
     @Override
     public ResponseEntity<String> signup(Map<String, String> requestMap) {
         try {
-            return userservice.signUp(requestMap);
+            return userservice.signup(requestMap);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

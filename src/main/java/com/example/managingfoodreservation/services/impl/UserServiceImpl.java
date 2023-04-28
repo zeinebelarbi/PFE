@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     EmailUtils emailUtils;
 
     @Override
-    public ResponseEntity<String> signUp(Map<String, String> requestMap) {
+    public ResponseEntity<String> signup(Map<String, String> requestMap) {
         log.info("Inside signup{} ", requestMap);
         try {
             if (validateSignUpMap(requestMap)) {
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
 
     private boolean validateSignUpMap(Map<String, String> requestMap) {
-        if (requestMap.containsKey("name") && requestMap.containsKey("email") && requestMap.containsKey("password")) {
+        if (requestMap.containsKey("Username") && requestMap.containsKey("email") && requestMap.containsKey("password")) {
             return true;
         }
 
@@ -76,10 +76,11 @@ public class UserServiceImpl implements UserService {
 
     private User getUserFromMap(Map<String, String> requestMap) {
         User user = new User();
-        user.setUsername(requestMap.get("name"));
+        user.setUsername(requestMap.get("Username"));
         user.setEmail(requestMap.get("email"));
         user.setPassword(requestMap.get("password"));
         user.setRole("user");
+        user.setStatus("false");
         return user;
     }
 
@@ -128,9 +129,9 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> update(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isUser()) {
-                Optional<User> optional = userRepository.findById(Integer.parseInt(requestMap.get("id")));
+                Optional<User> optional = userRepository.findById(Integer.parseInt(requestMap.get("idUser")));
                 if (!optional.isEmpty()) {
-                    userRepository.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
+                    userRepository.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("idUser")));
                     sendMailToAllAdmin(requestMap.get("status"), optional.get().getEmail(), userRepository.getAllAdmin());
                     return MenuUtils.getResponseEntity("User Status Updated Successfully", HttpStatus.OK);
 

@@ -13,7 +13,10 @@ import java.util.Map;
 public class DashboardControllerImpl implements DashboardController {
 
     @Autowired
-    DashboardService dashboardService;
+   private  DashboardService dashboardService;
+
+
+
     @Override
     public ResponseEntity<Map<String, Object>> getCount() {
         return dashboardService.getCount();

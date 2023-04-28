@@ -129,7 +129,6 @@ public class BillServiceImpl implements BillService {
             bill.setUuid((String) requestMap.get("uuid"));
             bill.setBillname((String) requestMap.get("name"));
             bill.setEmail((String) requestMap.get("email"));
-            bill.setContactNumber((String) requestMap.get("contactNumber"));
             bill.setPayementmethod((String) requestMap.get("payment Method"));
             bill.setTotal(Integer.parseInt((String) requestMap.get("totalAmount")));
             bill.setDishDetail((String) requestMap.get("dishDetails"));
@@ -168,7 +167,7 @@ public class BillServiceImpl implements BillService {
         if (jwtFilter.isAdmin()) {
             list = billRepository.getAllBills();
         } else {
-            list = billRepository.getAllBillByUserName(jwtFilter.getCurrentUser());
+            list = billRepository.getAllBillByUsername(jwtFilter.getCurrentUser());
 
         }
         return new ResponseEntity<>(list, HttpStatus.OK);

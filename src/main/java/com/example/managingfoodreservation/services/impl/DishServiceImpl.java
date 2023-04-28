@@ -78,7 +78,7 @@ public class DishServiceImpl implements DishService {
 
         dish.setMenuCategory(menuCategory);
         dish.setDishname(requestMap.get("name"));
-        dish.setDesription(requestMap.get("description"));
+        dish.setDescription(requestMap.get("description"));
         dish.setPrice(Integer.parseInt(requestMap.get("Dishprice")));
 
         return dish;
@@ -131,7 +131,7 @@ public class DishServiceImpl implements DishService {
             if (jwtFilter.isAdmin()) {
                 Optional optional = dishRepository.findById(iddish);
                 if (!optional.isEmpty()) {
-                    dishRepository.deleteById(iddish);
+                    dishRepository.deleteById (iddish);
                     return MenuUtils.getResponseEntity("Dish deleted Successfully ", HttpStatus.OK);
                 }
                 return MenuUtils.getResponseEntity("Dish Id does not exist ", HttpStatus.OK);
@@ -150,7 +150,7 @@ public class DishServiceImpl implements DishService {
             if (jwtFilter.isAdmin()) {
                 Optional optional = dishRepository.findById(Integer.parseInt(requestMap.get("id")));
                 if (!optional.isEmpty()) {
-                    dishRepository.updateDishStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
+                    dishRepository.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
                     return MenuUtils.getResponseEntity("Dish status Updated Successfuly", HttpStatus.OK);
 
                 }

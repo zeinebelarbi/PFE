@@ -20,9 +20,10 @@ public class DashboardServiceImpl implements DashboardService {
     private DishRepository dishRepository;
 
     @Autowired
-    MenuCategoryRepository menuCategoryRepository;
+    private   MenuCategoryRepository menuCategoryRepository;
     @Autowired
-    BillRepository billRepository;
+    private    BillRepository billRepository;
+
 
     @Override
     public ResponseEntity<Map<String, Object>> getCount() {

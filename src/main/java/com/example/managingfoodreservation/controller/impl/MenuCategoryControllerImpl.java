@@ -36,8 +36,10 @@ public class MenuCategoryControllerImpl implements MenuCategoryController {
         return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+
+
     @Override
-    public ResponseEntity<List<MenuCategory>> getAllMenuCategory(String filterValue) {
+    public ResponseEntity<List<MenuCategory>> getAllMenuCategory( String filterValue) {
        try{
 return menuCategoryservice.getAllMenuCategory(filterValue);
        }catch(Exception ex){

@@ -13,8 +13,10 @@ public interface MenuCategoryController {
     ResponseEntity<String> addNewMenuCategory(@RequestBody(required = true) Map<String, String> requestMap);
 
     @GetMapping(path ="/get")
-    ResponseEntity<List<MenuCategory>>getAllMenuCategory(@RequestParam(required=false)
-                                                         String filterValue);
+
+
+    ResponseEntity<List<MenuCategory>> getAllMenuCategory(String filterValue);
+
     @PostMapping(path = "/update ")
     ResponseEntity<String>updateMenuCategory(@RequestBody(required = true) Map<String, String> requestMap);
 }
