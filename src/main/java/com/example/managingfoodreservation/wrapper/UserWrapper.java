@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserWrapper {
 
-    private Integer idUser;
+    private Integer id;
     private String username;
     private  String email;
     private String password;
@@ -22,8 +22,8 @@ public class UserWrapper {
         this.username = username;
     }
 
-    public UserWrapper(Integer idUser, String username, String email, String password, String role, String status) {
-        this.idUser = idUser;
+    public UserWrapper(Integer id, String username, String email, String password, String role, String status) {
+        this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;

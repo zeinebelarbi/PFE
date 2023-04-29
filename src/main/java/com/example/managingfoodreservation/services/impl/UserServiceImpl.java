@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
 
     private boolean validateSignUpMap(Map<String, String> requestMap) {
-        if (requestMap.containsKey("Username") && requestMap.containsKey("email") && requestMap.containsKey("password")) {
+        if (requestMap.containsKey("username") && requestMap.containsKey("email") && requestMap.containsKey("password")) {
             return true;
         }
 
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
 
     private User getUserFromMap(Map<String, String> requestMap) {
         User user = new User();
-        user.setUsername(requestMap.get("Username"));
+        user.setUsername(requestMap.get("username"));
         user.setEmail(requestMap.get("email"));
         user.setPassword(requestMap.get("password"));
         user.setRole("user");
@@ -129,9 +129,9 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> update(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isUser()) {
-                Optional<User> optional = userRepository.findById(Integer.parseInt(requestMap.get("idUser")));
+                Optional<User> optional = userRepository.findById(Integer.parseInt(requestMap.get("id")));
                 if (!optional.isEmpty()) {
-                    userRepository.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("idUser")));
+                    userRepository.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
                     sendMailToAllAdmin(requestMap.get("status"), optional.get().getEmail(), userRepository.getAllAdmin());
                     return MenuUtils.getResponseEntity("User Status Updated Successfully", HttpStatus.OK);
 

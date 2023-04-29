@@ -22,6 +22,6 @@ public interface UserRepository extends JpaRepository<User,Integer> {
 
 @Transactional
 @Modifying
- Integer updateStatus(@Param("status" )String status,@Param("idUser" )Integer idUser );
+ Integer updateStatus(@Param("status" )String status,@Param("id" )Integer id );
 User findByEmail(String email);
 }

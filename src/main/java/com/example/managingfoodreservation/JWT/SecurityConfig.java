@@ -25,7 +25,7 @@ CustomerUsersDetailsService customerUsersDetailsService;
    JwtFilter jwtFilter;
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth)throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth)throws Exception{
       auth.getDefaultUserDetailsService();
     }
     @Bean
