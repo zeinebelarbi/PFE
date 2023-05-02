@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     EmailUtils emailUtils;
 
+
     @Override
     public ResponseEntity<String> signup(Map<String, String> requestMap) {
         log.info("Inside signup{} ", requestMap);
@@ -92,7 +93,7 @@ public class UserServiceImpl implements UserService {
                     new UsernamePasswordAuthenticationToken(requestMap.get("email"), requestMap.get("password"))
             );
             if (auth.isAuthenticated()) {
-                if (customerUsersDetailsService.getUserDetail().getRole().equalsIgnoreCase("true")) {
+                if (customerUsersDetailsService.getUserDetail().getStatus().equalsIgnoreCase("true")) {
                     return new ResponseEntity<String>("{\"token\":\"" + jwtUtil.generateToken(
                             customerUsersDetailsService.getUserDetail().getEmail(), customerUsersDetailsService.getUserDetail().getRole()) + "\"}"
                             , HttpStatus.OK);

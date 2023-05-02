@@ -3,7 +3,6 @@ package com.example.managingfoodreservation.JWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -24,9 +23,10 @@ CustomerUsersDetailsService customerUsersDetailsService;
    @Autowired
    JwtFilter jwtFilter;
 
+
     @Override
-    protected void configure(AuthenticationManagerBuilder auth)throws Exception{
-      auth.getDefaultUserDetailsService();
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(customerUsersDetailsService).passwordEncoder(passwordEncoder());
     }
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -38,13 +38,15 @@ CustomerUsersDetailsService customerUsersDetailsService;
         return super.authenticationManagerBean();
     }
 
-    @Override
+
+
+   @Override
     protected void configure(HttpSecurity http) throws Exception {
       http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
               .and()
               .csrf().disable()
               .authorizeHttpRequests()
-                  .antMatchers("/user/login","/user/signup","/user/forgotPassword")
+                  .antMatchers("/user/login","/user/forgotPassword")
               .permitAll()
               .anyRequest()
               .authenticated()
