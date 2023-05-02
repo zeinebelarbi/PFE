@@ -29,7 +29,7 @@ private String userName =null;
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 
-        if (httpServletRequest.getServletPath().matches("/user/login|/user/forgetPassword")){
+        if (httpServletRequest.getServletPath().matches("/user/login|/user/forgetPassword|/user/signup")){
     filterChain.doFilter(httpServletRequest,httpServletResponse);
 }else {
 String authorizationHeader= httpServletRequest.getHeader("Authorization");
