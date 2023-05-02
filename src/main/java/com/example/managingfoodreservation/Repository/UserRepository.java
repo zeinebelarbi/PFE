@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<User,Integer> {
 
 
  User findByEmailId(@Param("email") String email);
- @Query("SELECT u FROM User u")
+ @Query("SELECT u FROM User uELECT new com.example.managingfoodreservation.wrapper.UserWrapper(u.id, u.username, u.email, u.password, u.role, u.status) FROM User u")
  List<UserWrapper> getAllUser();
 
  @Query("SELECT u.email FROM User u WHERE u.role = 'admin'")
