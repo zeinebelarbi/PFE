@@ -96,7 +96,7 @@ return userservice.checkToken();
     }
 
     @Override
-    public ResponseEntity<String> forgetPassword(Map<String, String> requestMap) {
+    public ResponseEntity<String> forgotPassword(Map<String, String> requestMap) {
         try{
           return userservice.forgotPassword(requestMap);
         }catch(Exception ex){

@@ -46,7 +46,7 @@ CustomerUsersDetailsService customerUsersDetailsService;
               .and()
               .csrf().disable()
               .authorizeHttpRequests()
-                  .antMatchers("/user/login","/user/forgotPassword")
+                  .antMatchers("/user/login","/user/signup","/user/forgotPassword")
               .permitAll()
               .anyRequest()
               .authenticated()

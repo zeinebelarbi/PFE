@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<String> update(Map<String, String> requestMap) {
         try {
-            if (jwtFilter.isUser()) {
+            if (jwtFilter.isAdmin()) {
                 Optional<User> optional = userRepository.findById(Integer.parseInt(requestMap.get("id")));
                 if (!optional.isEmpty()) {
                     userRepository.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
