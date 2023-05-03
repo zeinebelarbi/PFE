@@ -12,14 +12,15 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User,Integer> {
 
+ @Query("SELECT u FROM User u WHERE u.email = :email")
+ User findByEmail(@Param("email") String email);
 
- User findByEmailId(@Param("email") String email);
-<<<<<<< HEAD
+
+
  @Query("SELECT new com.example.managingfoodreservation.wrapper.UserWrapper(u.id, u.username, u.email, u.password, u.role, u.status) FROM User u")
-=======
- @Query("SELECT u FROM User uELECT new com.example.managingfoodreservation.wrapper.UserWrapper(u.id, u.username, u.email, u.password, u.role, u.status) FROM User u")
->>>>>>> 471fcb86fb2f9d54799c7c7fceec1e68078c336d
+
  List<UserWrapper> getAllUser();
+
 
  @Query("SELECT u.email FROM User u WHERE u.role = 'admin'")
  List<String> getAllAdmin();
@@ -27,5 +28,4 @@ public interface UserRepository extends JpaRepository<User,Integer> {
 @Transactional
 @Modifying
  Integer updateStatus(@Param("status" )String status,@Param("id" )Integer id );
-User findByEmail(String email);
 }

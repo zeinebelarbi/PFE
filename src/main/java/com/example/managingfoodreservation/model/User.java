@@ -32,7 +32,7 @@ private static final long serialVersionID =1L;
     private String username;
 
 
-    @Column(name ="email")
+    @Column(name ="email",unique = true)
     private String email;
 
 

@@ -7,6 +7,7 @@ import com.example.managingfoodreservation.Repository.UserRepository;
 import com.example.managingfoodreservation.constants.MenuConstants;
 
 
+
 import com.example.managingfoodreservation.model.User;
 import com.example.managingfoodreservation.services.UserService;
 
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
         log.info("Inside signup{} ", requestMap);
         try {
             if (validateSignUpMap(requestMap)) {
-                User user = userRepository.findByEmailId(requestMap.get("email"));
+                User user = userRepository.findByEmail(requestMap.get("email"));
                 if (Objects.isNull(user)) {
                     userRepository.save(getUserFromMap(requestMap));
                     return MenuUtils.getResponseEntity("Successfully Registered", HttpStatus.OK);
@@ -173,7 +174,7 @@ public class UserServiceImpl implements UserService {
             User userObj = userRepository.findByEmail(jwtFilter.getCurrentUser());
             if (!userObj.equals(null)) {
                 if (userObj.getPassword().equals(requestMap.get("oldPassword"))) {
-                    userObj.setPassword(requestMap.get("newPassword"));
+                    userObj.setPassword(requestMap.get(requestMap.get("newPassword")));
                     userRepository.save(userObj);
                     return MenuUtils.getResponseEntity("Password Updated Successfully ", HttpStatus.OK);
                 }
