@@ -9,9 +9,14 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 
-@NamedQuery(name=" Dish.getAllDish",query = "select new  com.example.managingfoodreservation.wrapper.DishWrapper(d.iddish ,d.dishname,d.description,d.price,d.status,d.menuCategory.idMenuCategory,d.menuCategory.menucategoryname )from Dish d")
+@NamedQuery(name="Dish.getAllDish",query = "select new com.example.managingfoodreservation.wrapper.DishWrapper(d.iddish, d.dishname, d.description, d.price, d.status, d.menuCategory.idMenuCategory, d.menuCategory.menucategoryname) from Dish d")
+
 @NamedQuery(name=" Dish.updateStatus",query = "update Dish d set d.status=:status where d.iddish=:iddish ")
-@NamedQuery(name=" Dish.getDishByMenuCategory",query = "select new  com.example.managingfoodreservation.wrapper.DishWrapper(d.iddish,d.dishname)from Dish d where d.menuCategory.idMenuCategory=:id and d.status='true'")
+@NamedQuery(name="Dish.getDishByMenuCategory", query = "select new com.example.managingfoodreservation.wrapper.DishWrapper(d.iddish, d.dishname, d.description, d.price, d.status, d.menuCategory.idMenuCategory, d.menuCategory.menucategoryname) from Dish d where d.menuCategory.idMenuCategory=:idMenuCategory")
+
+
+
+
 @NamedQuery(name="Dish.getDishById",query="select new com.example.managingfoodreservation.wrapper.DishWrapper(d.iddish,d.dishname,d.description,d.price)from Dish d where d.iddish=:iddish ")
 
 @Data
@@ -32,7 +37,7 @@ public class Dish implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
      @JoinColumn(name="menucategory",nullable = false)
     private MenuCategory menuCategory;
-    @Column(name ="descrition")
+    @Column(name ="description")
     private String description;
 
     @Column(name ="price")
@@ -40,7 +45,4 @@ public class Dish implements Serializable {
 
     @Column(name="status")
     private String status;
-
-
-
 }

@@ -84,17 +84,16 @@ return dishService.updateStatus(requestMap);
     }
 
     @Override
-    public ResponseEntity<List<DishWrapper>> getByMenuCategory(Integer iddish) {
-       try{
-return dishService. getByMenuCategory(iddish);
-       }catch(Exception ex){
+    public ResponseEntity<List<DishWrapper>> getByMenuCategory(Integer idMenuCategory) {
+        try{
+            return dishService. getByMenuCategory(idMenuCategory);
+        }catch(Exception ex){
 
-           ex.printStackTrace();
-       }
-       return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-    @Override
+        @Override
     public ResponseEntity<DishWrapper> getDishById(Integer iddish) {
         try{
    return dishService.getDishById(iddish);

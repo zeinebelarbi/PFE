@@ -15,28 +15,28 @@ import java.io.Serializable;
 @Table(name="Bill")
 public class Bill implements Serializable {
     private static final long  serialVersionUID =1L;
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-@Column(name ="id")
-private Integer idbill;
+    @Column(name ="id")
+    private Integer idbill;
 
-@Column(name ="billname")
-private String billname;
-@Column(name ="username")
-private String username;
-@Column(name ="uuid")
-private String uuid;
+    @Column(name ="billname")
+    private String billname;
+    @Column(name ="username")
+    private String username;
+    @Column(name ="uuid")
+    private String uuid;
 
 
-@Column(name ="payementmethod")
-private String payementmethod;
-@Column(name ="total")
-private Integer total;
-@Column(name="dishDetails",columnDefinition ="json" )
-private String dishDetail;
-@Column(name="createdby" )
-private String createdby;
-@Column(name="email" )
-private String email;
+    @Column(name ="payementmethod")
+    private String payementmethod;
+    @Column(name ="total")
+    private Integer total;
+    @Column(name="dishDetails",columnDefinition ="json" )
+    private String dishDetail;
+    @Column(name="createdby" )
+    private String createdby;
+    @Column(name="email" )
+    private String email;
 }

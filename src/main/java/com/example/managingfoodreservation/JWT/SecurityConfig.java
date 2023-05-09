@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.util.Arrays;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -40,22 +42,28 @@ CustomerUsersDetailsService customerUsersDetailsService;
 
 
 
-   @Override
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
-      http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
-              .and()
-              .csrf().disable()
-              .authorizeHttpRequests()
-                  .antMatchers("/user/login","/user/signup","/user/forgotPassword")
-              .permitAll()
-              .anyRequest()
-              .authenticated()
-              .and().exceptionHandling()
-              .and()
-              .sessionManagement()
-              .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-      http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-  //,"/user/signup"
-
+        http.cors().configurationSource(request -> {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowedOrigins(Arrays.asList("http://localhost:4200")); // Angular app's origin
+                    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+                    config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+                    return config;
+                })
+                .and()
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/user/login", "/user/signup", "/user/forgotPassword")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and().exceptionHandling()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
+
 }

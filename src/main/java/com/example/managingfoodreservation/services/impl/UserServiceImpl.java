@@ -152,6 +152,16 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
+    public ResponseEntity<String> checkToken() {
+
+
+        return MenuUtils.getResponseEntity("true", HttpStatus.OK);
+    }
+
+
+
+
     private void sendMailToAllAdmin(String status, String user, List<String> allAdmin) {
         allAdmin.remove(jwtFilter.getCurrentUser());
         if (status != null && status.equalsIgnoreCase("true")) {
@@ -159,13 +169,6 @@ public class UserServiceImpl implements UserService {
         } else {
             emailUtils.sendSimpleMessage(jwtFilter.getCurrentUser(), "Account Disabled", "USER:-" + user + "\n is disabled by \nADMIN:-" + jwtFilter.getCurrentUser(), allAdmin);
         }
-    }
-
-    @Override
-    public ResponseEntity<String> checkToken() {
-
-
-        return MenuUtils.getResponseEntity("true", HttpStatus.OK);
     }
 
     @Override
@@ -208,6 +211,24 @@ emailUtils.forgotMail(user.getEmail(), "Credentials by Food management system", 
         return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
-}
+
+    @Override
+    public ResponseEntity<String> delete(Integer id) {
+        try{
+            Optional optional = userRepository.findById(id);
+            if(!optional.isEmpty()){
+                userRepository.deleteById(id);
+                return MenuUtils.getResponseEntity("user deleted successfully",HttpStatus.OK);
+            }
+            return MenuUtils.getResponseEntity("User id does not exist",HttpStatus.OK);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+
+        return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR) ;
+    }
+    }
+
 
 

@@ -56,11 +56,18 @@ usernamePasswordAuthenticationToken.setDetails(
 }
 
     }
-    public  boolean isAdmin(){
-        return "admin".equalsIgnoreCase((String) claims.get("role"));
+    public boolean isAdmin() {
+        if (claims != null && claims.get("role") != null) {
+            return "admin".equalsIgnoreCase((String) claims.get("role"));
+        }
+        return false;
     }
-    public  boolean isUser(){
-        return "user".equalsIgnoreCase((String) claims.get("role"));
+
+    public boolean isUser() {
+        if (claims != null && claims.get("role") != null) {
+            return "user".equalsIgnoreCase((String) claims.get("role"));
+        }
+        return false;
     }
     public String getCurrentUser(){
      return userName;

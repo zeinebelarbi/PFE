@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class BillServiceImpl implements BillService {
                     requestMap.put("uuid", fileName);
                     insertBill(requestMap);
                 }
-                String data = "Name: " + requestMap.get("name") + "\n" + "Contact Number:" + requestMap.get("contactNumber") + "\n" + "Email: " + requestMap.get("email") + "\n" + "Payement Method: " + requestMap.get("payement Method ");
+                String data = "Name: " + requestMap.get("name") +  "\n" + "Email: " + requestMap.get("email") + "\n" + "Payement Method: " + requestMap.get("paymentMethod");
 
                 Document document = new Document();
                 PdfWriter.getInstance(document, new FileOutputStream(MenuConstants.STORE_LOCATION + "\\" + fileName + ".pdf"));
@@ -65,9 +65,21 @@ public class BillServiceImpl implements BillService {
                 PdfPTable table = new PdfPTable(5);
                 table.setWidthPercentage(100);
                 addTableHeader(table);
-                JSONArray jsonArray = MenuUtils.getJsonAArrayFromString((String) requestMap.get("dishDetails"));
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    addRows(table, MenuUtils.getMapFromJson(jsonArray.getString(i)));
+                JSONArray jsonArray = null;
+                if (requestMap.get("dishDetails") instanceof JSONArray) {
+                    jsonArray = (JSONArray) requestMap.get("dishDetails");
+                } else if (requestMap.get("dishDetails") instanceof String) {
+                    jsonArray = MenuUtils.getJsonAArrayFromString((String) requestMap.get("dishDetails"));
+                } else if (requestMap.get("dishDetails") instanceof List) {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    String jsonString = objectMapper.writeValueAsString(requestMap.get("dishDetails"));
+                    jsonArray = MenuUtils.getJsonAArrayFromString(jsonString);
+                }
+
+                if (jsonArray != null) {
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        addRows(table, MenuUtils.getMapFromJson(jsonArray.getString(i)));
+                    }
                 }
                 document.add(table);
                 Paragraph footer = new Paragraph("Total :" + requestMap.get("totalAmount") + "\n" + "Thank you for visiting, Please visit again !", getFont("Data"));
@@ -78,24 +90,20 @@ public class BillServiceImpl implements BillService {
             return MenuUtils.getResponseEntity("Required data not found ", HttpStatus.BAD_REQUEST);
         } catch (Exception ex) {
 
-
             ex.printStackTrace();
 
         }
         return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-
-    private void addRows(PdfPTable table, Map<String, Object> data) {
-        log.info("Inside addRows");
-        table.addCell((String) data.get("name"));
-        table.addCell((String) data.get("MenuCategory"));
-        table.addCell((String) data.get("Quantity"));
-        table.addCell((String) data.get("Price"));
-        table.addCell((String) data.get("Sub Total"));
-        table.addCell(Double.toString((Double) data.get("Price")));
-        table.addCell(Double.toString((Double) data.get("Total")));
+    private void addRows(PdfPTable table, Map<String, Object> dish) {
+        table.addCell(dish.get("name").toString());
+        table.addCell(dish.get("category").toString());
+        table.addCell(String.valueOf(((Number) dish.get("quantity")).intValue()));
+        table.addCell(String.valueOf(((Number) dish.get("price")).intValue()));
+        table.addCell(String.valueOf(((Number) dish.get("total")).intValue()));
     }
+
+
 
     private void addTableHeader(PdfPTable table) {
         log.info("Inside addTableHeader");
@@ -119,7 +127,7 @@ public class BillServiceImpl implements BillService {
         rect.enableBorderSide(2);
         rect.enableBorderSide(4);
         rect.enableBorderSide(8);
-        rect.setBackgroundColor(BaseColor.BLACK);
+        rect.setBorderColor(BaseColor.BLACK);
         document.add(rect);
     }
 
@@ -141,9 +149,9 @@ public class BillServiceImpl implements BillService {
     }
 
     private boolean validateRequestMap(Map<String, Object> requestMap) {
-        return requestMap.containsKey("name") && requestMap.containsKey("contactNumber") && requestMap.containsKey("email") && requestMap.containsKey("paymentMethod") && requestMap.containsKey("dishDetails") && requestMap.containsKey("totalAmount");
-
+        return requestMap.containsKey("name")  && requestMap.containsKey("email") && requestMap.containsKey("paymentMethod") && requestMap.containsKey("dishDetails") && requestMap.containsKey("totalAmount");
     }
+
 
     private Font getFont(String type) {
         log.info("Inside getFont");
@@ -181,41 +189,41 @@ public class BillServiceImpl implements BillService {
             byte[] byteArray = new byte[0];
             if (!requestMap.containsKey("uuid") && validateRequestMap(requestMap))
                 return new ResponseEntity<>(byteArray, HttpStatus.BAD_REQUEST);
-                String filePath = MenuConstants.STORE_LOCATION + "\\" + (String) requestMap.get("uuid") + ".pdf";
-if (MenuUtils.isFileExist(filePath)){
-    byteArray =getByteArray(filePath);
-    return new ResponseEntity<>(byteArray,HttpStatus.OK);
-}else{
-    requestMap.put("isGenerate",false);
-    generateReport(requestMap);
-    byteArray = getByteArray(filePath);
-    return new ResponseEntity<>(byteArray,HttpStatus.OK);
-}
-        }
-            catch(Exception ex){
-                ex.printStackTrace();
+            String filePath = MenuConstants.STORE_LOCATION + "\\" + (String) requestMap.get("uuid") + ".pdf";
+            if (MenuUtils.isFileExist(filePath)){
+                byteArray =getByteArray(filePath);
+                return new ResponseEntity<>(byteArray,HttpStatus.OK);
+            }else{
+                requestMap.put("isGenerate",false);
+                generateReport(requestMap);
+                byteArray = getByteArray(filePath);
+                return new ResponseEntity<>(byteArray,HttpStatus.OK);
             }
-            return null;
         }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
 
 
 
     private byte[] getByteArray(String filePath) throws Exception{
-    File initialFile = new File(filePath);
-    InputStream targetStream = new FileInputStream(initialFile);
-    byte[] byteArray =  IOUtils.toByteArray(targetStream);
+        File initialFile = new File(filePath);
+        InputStream targetStream = new FileInputStream(initialFile);
+        byte[] byteArray =  IOUtils.toByteArray(targetStream);
         targetStream.close();
-return byteArray;
+        return byteArray;
     }
     @Override
     public ResponseEntity<String> deleteBill(Integer idbill) {
         try{
-    Optional optional = billRepository.findById(idbill);
-       if(!optional.isEmpty()){
-billRepository.deleteById(idbill);
-return MenuUtils.getResponseEntity("Bill deleted successfully",HttpStatus.OK);
-       }
-return MenuUtils.getResponseEntity("Bill id does not exist",HttpStatus.OK);
+            Optional optional = billRepository.findById(idbill);
+            if(!optional.isEmpty()){
+                billRepository.deleteById(idbill);
+                return MenuUtils.getResponseEntity("Bill deleted successfully",HttpStatus.OK);
+            }
+            return MenuUtils.getResponseEntity("Bill id does not exist",HttpStatus.OK);
         }catch(Exception ex){
             ex.printStackTrace();
         }
@@ -224,4 +232,3 @@ return MenuUtils.getResponseEntity("Bill id does not exist",HttpStatus.OK);
         return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR) ;
     }
 }
-

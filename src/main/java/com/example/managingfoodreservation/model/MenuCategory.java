@@ -6,7 +6,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 
 import java.io.Serializable;
-@NamedQuery(name=" MenuCategory.getAllMenuCategory",query = "select men_c from MenuCategory men_c where men_c.id in(select d.menuCategory from Dish d where d.status='true')  ")
+@NamedQuery(name=" MenuCategory. getAllMenuCategory", query = "select mc from MenuCategory mc where mc.id in(select d.menuCategory from Dish d where d.status='true')  ")
 
 
 @Data
@@ -18,7 +18,7 @@ public class MenuCategory implements Serializable {
     private static final long serialVersionUID =1L;
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name ="idMenuCategory")
+    @Column(name ="id")
     private Integer idMenuCategory;
 
     @Column(name ="name")

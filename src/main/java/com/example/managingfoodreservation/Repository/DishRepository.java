@@ -21,6 +21,9 @@ public interface DishRepository  extends JpaRepository<Dish,Integer> {
     @Query("update Dish d set d.status = :status where d.iddish = :iddish")
     void updateStatus(@Param("status") String status, @Param("iddish") Integer iddish);
 
-    List<DishWrapper> getDishByMenuCategory(@Param("iddish") Integer iddish) ;
+    @Query(name = "Dish.getDishByMenuCategory")
+    List<DishWrapper> getDishByMenuCategory(@Param("idMenuCategory") Integer idMenuCategory);
+
+
     DishWrapper getDishById(@Param("iddish") Integer iddish);
 }

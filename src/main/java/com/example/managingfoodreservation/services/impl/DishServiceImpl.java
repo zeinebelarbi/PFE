@@ -5,6 +5,7 @@ import com.example.managingfoodreservation.JWT.JwtFilter;
 import com.example.managingfoodreservation.Repository.DishRepository;
 
 
+import com.example.managingfoodreservation.Repository.MenuCategoryRepository;
 import com.example.managingfoodreservation.constants.MenuConstants;
 import com.example.managingfoodreservation.model.Dish;
 import com.example.managingfoodreservation.model.MenuCategory;
@@ -19,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +34,10 @@ public class DishServiceImpl implements DishService {
     DishRepository dishRepository;
     @Autowired
     JwtFilter jwtFilter;
-
+    @Autowired
+    EntityManager entityManager;
+    @Autowired
+    MenuCategoryRepository menuCategoryRepository;
 
     @Override
     public ResponseEntity<String> addNewDish(Map<String, String> requestMap) {
@@ -70,7 +75,7 @@ public class DishServiceImpl implements DishService {
         menuCategory.setIdMenuCategory(Integer.parseInt(requestMap.get("MenuCategoryId")));
         Dish dish = new Dish();
         if (isAdd) {
-            dish.setIddish(Integer.parseInt(requestMap.get("DishId")));
+            dish.setIddish(Integer.parseInt(requestMap.get("id")));
         } else {
             dish.setStatus("true");
         }
@@ -79,7 +84,7 @@ public class DishServiceImpl implements DishService {
         dish.setMenuCategory(menuCategory);
         dish.setDishname(requestMap.get("name"));
         dish.setDescription(requestMap.get("description"));
-        dish.setPrice(Integer.parseInt(requestMap.get("Dishprice")));
+        dish.setPrice(Integer.parseInt(requestMap.get("price")));
 
         return dish;
     }
@@ -89,15 +94,17 @@ public class DishServiceImpl implements DishService {
         try {
             if (!Strings.isNullOrEmpty(filterValue) && filterValue.equalsIgnoreCase("true")) {
                 log.info("Inside if ");
-
                 return new ResponseEntity<>(dishRepository.getAllDish(), HttpStatus.OK);
             }
-            return new ResponseEntity(dishRepository.findAll(), HttpStatus.OK);
+            // Use the NamedQuery here
+            List<DishWrapper> dishes = entityManager.createNamedQuery("Dish.getAllDish", DishWrapper.class).getResultList();
+            return new ResponseEntity(dishes, HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> updateDish(Map<String, String> requestMap) {
@@ -107,12 +114,18 @@ public class DishServiceImpl implements DishService {
                 if (validateDishMap(requestMap, true)) {
                     Optional<Dish> optional = dishRepository.findById(Integer.parseInt(requestMap.get("id")));
                     if (!optional.isEmpty()) {
-                        Dish dish = getDishFromMap(requestMap, true);
-                        dish.setStatus(optional.get().getStatus());
-                        dishRepository.save(dish);
-                        return MenuUtils.getResponseEntity("Dish updated successfully", HttpStatus.OK);
+
+                        // Check if MenuCategoryId exists
+                        if (menuCategoryRepository.existsById(Integer.parseInt(requestMap.get("MenuCategoryId")))) {
+                            Dish dish = getDishFromMap(requestMap, true);
+                            dish.setStatus(optional.get().getStatus());
+                            dishRepository.save(dish);
+                            return MenuUtils.getResponseEntity("Dish updated successfully", HttpStatus.OK);
+                        } else {
+                            return MenuUtils.getResponseEntity("Menu Category id doesn't exist", HttpStatus.OK);
+                        }
                     } else {
-                        return MenuUtils.getResponseEntity("Dish  id doesn't exist", HttpStatus.OK);
+                        return MenuUtils.getResponseEntity("Dish id doesn't exist", HttpStatus.OK);
                     }
                 }
                 return MenuUtils.getResponseEntity(MenuConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
@@ -170,14 +183,15 @@ public class DishServiceImpl implements DishService {
 
 
     @Override
-    public ResponseEntity<List<DishWrapper>> getByMenuCategory(Integer iddish) {
+    public ResponseEntity<List<DishWrapper>> getByMenuCategory(Integer idMenuCategory) {
         try {
-            return new ResponseEntity<>(dishRepository.getDishByMenuCategory(iddish), HttpStatus.OK);
+            return new ResponseEntity<>(dishRepository.getDishByMenuCategory(idMenuCategory), HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<DishWrapper> getDishById(Integer iddish) {

@@ -4,10 +4,12 @@ import com.example.managingfoodreservation.controller.UserController;
 import com.example.managingfoodreservation.services.UserService;
 import com.example.managingfoodreservation.utils.MenuUtils;
 import com.example.managingfoodreservation.wrapper.UserWrapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+
 
 import java.util.ArrayList;
 
@@ -17,8 +19,9 @@ import java.util.Map;
 
 @RestController
 
+
 public class UserControllerImpl implements UserController {
-    @Autowired
+
     private UserService userservice;
 
     @Autowired
@@ -73,16 +76,23 @@ public class UserControllerImpl implements UserController {
         }
     }
 
+
+
     @Override
     public ResponseEntity<String> checkToken() {
-     try{
-return userservice.checkToken();
-     }catch  (Exception ex){
-         ex.printStackTrace();
+        try{
+            return userservice.checkToken();
+        }catch  (Exception ex){
+            ex.printStackTrace();
         }
         return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
+
+
+
+
+
 
     @Override
     public ResponseEntity<String> changePassword(Map<String, String> requestMap) {
@@ -106,6 +116,15 @@ return userservice.checkToken();
 
     }
 
+    @Override
+    public ResponseEntity<String> delete(Integer id) {
+        try {
+            return userservice. delete(id);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    }
 
-}
 

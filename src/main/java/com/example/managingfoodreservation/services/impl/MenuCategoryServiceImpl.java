@@ -36,25 +36,31 @@ public  class MenuCategoryServiceImpl implements MenuCategoryService {
     @Override
     public ResponseEntity<String> addNewMenuCategory(Map<String, String> requestMap) {
         try {
+            log.info("addNewMenuCategory: Received request with parameters: {}", requestMap);
+
             if (jwtFilter.isAdmin()) {
                 if (validateCategoryMap(requestMap, false)) {
-                    menuCategoryRepository.save(getMenuCategoryFromMap(requestMap, false));
+                    menuCategoryRepository.save(getMenuCategoryFromMap(requestMap,false));
+                    log.info("addNewMenuCategory: MenuCategory added successfully");
                     return MenuUtils.getResponseEntity("MenuCategory Added Successfully", HttpStatus.OK);
+                } else {
+                    log.warn("addNewMenuCategory: Invalid request parameters: {}", requestMap);
+                    return MenuUtils.getResponseEntity(MenuConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
                 }
             } else {
+                log.warn("addNewMenuCategory: Unauthorized access");
                 return MenuUtils.getResponseEntity(MenuConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
-
+            log.error("addNewMenuCategory: Error adding new MenuCategory", ex);
+            return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
 
     private boolean validateCategoryMap(Map<String, String> requestMap, boolean validateId) {
-        if (requestMap.containsKey("name")) {
+        if (requestMap.containsKey("menucategoryname")) {
             if (requestMap.containsKey("id") && validateId) {
                 return true;
             } else if (!validateId) {
@@ -64,15 +70,20 @@ public  class MenuCategoryServiceImpl implements MenuCategoryService {
         return false;
     }
 
-    private MenuCategory getMenuCategoryFromMap(Map<String, String> requestMap, Boolean isAdd) {
+
+
+
+
+    private MenuCategory getMenuCategoryFromMap(Map<String, String> requestMap, boolean validateId) {
         MenuCategory menuCategory = new MenuCategory();
-        if (isAdd) {
+        menuCategory.setMenucategoryname(requestMap.get("menucategoryname"));
+        if (validateId) {
             menuCategory.setIdMenuCategory(Integer.parseInt(requestMap.get("id")));
         }
-        menuCategory.setMenucategoryname(requestMap.get("name"));
         return menuCategory;
-
     }
+
+
     @Override
     public ResponseEntity<List<MenuCategory>> getAllMenuCategory(String filterValue) {
         try{
@@ -91,26 +102,25 @@ return new ResponseEntity<List<MenuCategory>>(new ArrayList<>(),HttpStatus.INTER
     @Override
     public ResponseEntity<String> updateMenuCategory(Map<String, String> requestMap) {
         try{
-if (jwtFilter.isAdmin()){
-if (validateCategoryMap(requestMap, true)){
-    Optional optional= menuCategoryRepository.findById(Integer.parseInt(requestMap.get("id")));
-    if(!optional.isEmpty()){
-menuCategoryRepository.save(getMenuCategoryFromMap(requestMap,true));
-return MenuUtils.getResponseEntity("MenuCategory updated successfully",HttpStatus.OK);
-    }else{
-        return MenuUtils.getResponseEntity("MenuCategory id doesn't exist",HttpStatus.OK);
-    }
-}
-return MenuUtils.getResponseEntity(MenuConstants.INVALID_DATA,HttpStatus.BAD_REQUEST);
-}else{
-   return   MenuUtils.getResponseEntity(MenuConstants.UNAUTHORIZED_ACCESS,HttpStatus.UNAUTHORIZED);
-}
+            if (jwtFilter.isAdmin()){
+                if (validateCategoryMap(requestMap, true)){
+                    Optional optional= menuCategoryRepository.findById(Integer.parseInt(requestMap.get("id")));
+                    if(!optional.isEmpty()){
+                        menuCategoryRepository.save(getMenuCategoryFromMap(requestMap, true));
+                        return MenuUtils.getResponseEntity("MenuCategory updated successfully",HttpStatus.OK);
+                    }else{
+                        return MenuUtils.getResponseEntity("MenuCategory id doesn't exist",HttpStatus.OK);
+                    }
+                }
+                return MenuUtils.getResponseEntity(MenuConstants.INVALID_DATA,HttpStatus.BAD_REQUEST);
+            }else{
+                return   MenuUtils.getResponseEntity(MenuConstants.UNAUTHORIZED_ACCESS,HttpStatus.UNAUTHORIZED);
+            }
         }catch(Exception ex){
             ex.printStackTrace();
         }
         return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 }
 
 

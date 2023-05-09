@@ -22,7 +22,7 @@ public interface DishService {
 
 
 
-    ResponseEntity<List<DishWrapper>> getByMenuCategory(Integer iddish);
+    ResponseEntity<List<DishWrapper>> getByMenuCategory(Integer idMenuCategory);
 
     ResponseEntity<DishWrapper> getDishById(Integer iddish);
 }

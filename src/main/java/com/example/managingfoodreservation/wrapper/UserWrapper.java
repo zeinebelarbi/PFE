@@ -5,7 +5,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserWrapper {
+public class
+UserWrapper {
 
     private Integer id;
     private String username;

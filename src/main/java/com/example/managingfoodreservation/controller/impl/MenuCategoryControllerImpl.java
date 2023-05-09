@@ -22,6 +22,7 @@ import java.util.Map;
 @RestController
 
 public class MenuCategoryControllerImpl implements MenuCategoryController {
+
     @Autowired
     private MenuCategoryService menuCategoryservice;
 
@@ -51,12 +52,11 @@ return menuCategoryservice.getAllMenuCategory(filterValue);
     @Override
     public ResponseEntity<String> updateMenuCategory(Map<String, String> requestMap) {
       try{
+
 return menuCategoryservice.updateMenuCategory(requestMap);
       }catch(Exception ex){
           ex.printStackTrace();
       }
       return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-
 }
