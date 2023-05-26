@@ -1,0 +1,40 @@
+<body>
+    <mat-card>
+        <b>
+            <span>
+              Dashboard  
+            </span>
+        </b>
+    </mat-card>
+    <br>
+    <div class="row">
+        <div class ="column">
+            <div class ="card"> 
+                  <div class="container">
+                    <h2 class="title">Total Menu Category</h2>
+                  <h1 class="title">{{data?.MenuCategory}}</h1>
+                  <p><button class ="button" [routerLink]="['/canteen/menucategory']">View Menu Category</button></p>
+                </div>
+            </div>
+        </div>
+
+        <div class ="column">
+            <div class ="card"> 
+                  <div class="container">
+                    <h2 class="title">Total Dish</h2>
+                    <h1 class="title">{{data?.dish}}</h1>
+                    <p><button class ="button" [routerLink]="['/canteen/dish']">View Dish</button></p>
+                  </div>
+            </div>
+        </div>
+        <div class ="column">
+            <div class ="card"> 
+                  <div class="container">
+                    <h2 class="title">Total Bill</h2>
+                    <h1 class="title">{{data?.bill}}</h1>
+                    <p><button class ="button" [routerLink]="['/canteen/bill']">View Bill</button></p>
+                  </div>
+            </div>
+        </div>
+    </div>
+</body>
