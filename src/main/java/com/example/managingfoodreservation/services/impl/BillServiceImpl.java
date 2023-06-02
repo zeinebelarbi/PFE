@@ -6,6 +6,7 @@ import com.example.managingfoodreservation.constants.MenuConstants;
 import com.example.managingfoodreservation.model.Bill;
 import com.example.managingfoodreservation.services.BillService;
 import com.example.managingfoodreservation.utils.MenuUtils;
+import com.google.gson.internal.LinkedTreeMap;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -49,14 +50,14 @@ public class BillServiceImpl implements BillService {
                     requestMap.put("uuid", fileName);
                     insertBill(requestMap);
                 }
-                String data = "Name: " + requestMap.get("name") +  "\n" + "Email: " + requestMap.get("email") + "\n" + "Payement Method: " + requestMap.get("paymentMethod");
-
+                String data = "Name: " + requestMap.get("name") +  "\n"  + "Payement Method: " + requestMap.get("paymentMethod")+"\n";
+                System.out.println(data);
                 Document document = new Document();
                 PdfWriter.getInstance(document, new FileOutputStream(MenuConstants.STORE_LOCATION + "\\" + fileName + ".pdf"));
 
                 document.open();
                 setRectangleInPdf(document);
-                Paragraph chunk = new Paragraph("Food management System ", getFont("Header"));
+                Paragraph chunk = new Paragraph("WEVIOO CANTEEN ", getFont("Header"));
 
                 chunk.setAlignment(Element.ALIGN_CENTER);
                 document.add(chunk);
@@ -83,6 +84,7 @@ public class BillServiceImpl implements BillService {
                 }
                 document.add(table);
                 Paragraph footer = new Paragraph("Total :" + requestMap.get("totalAmount") + "\n" + "Thank you for visiting, Please visit again !", getFont("Data"));
+//                Paragraph footer = new Paragraph("Total :" + requestMap.get("quantity") + "\n" + "Thank you for visiting, Please visit again !", getFont("Data"));
                 document.add(footer);
                 document.close();
                 return new ResponseEntity<>("{\"uuid\":\"" + fileName + "\"}", HttpStatus.OK);
@@ -96,12 +98,50 @@ public class BillServiceImpl implements BillService {
         return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     private void addRows(PdfPTable table, Map<String, Object> dish) {
-        table.addCell(dish.get("name").toString());
-        table.addCell(dish.get("category").toString());
-        table.addCell(String.valueOf(((Number) dish.get("quantity")).intValue()));
-        table.addCell(String.valueOf(((Number) dish.get("price")).intValue()));
-        table.addCell(String.valueOf(((Number) dish.get("total")).intValue()));
+
+        LinkedTreeMap<String,Object> dishDetails= (LinkedTreeMap<String, Object>) dish.get("dishname");
+        Double subTotal= (double) 0;
+       // System.out.println(((Dish) dish.get("dishname")).getDishname());
+        if (dishDetails.containsKey("name") && dishDetails.get("name") != null) {
+            table.addCell(dishDetails.get("name").toString());
+        } else {
+            table.addCell("");
+        }
+
+        if (dishDetails.containsKey("menucategoryname") && dishDetails.get("menucategoryname") != null) {
+            table.addCell(dishDetails.get("menucategoryname").toString());
+        } else {
+            table.addCell("");
+        }
+
+        if (dish.containsKey("quantity") && dish.get("quantity") != null) {
+            table.addCell(dish.get("quantity").toString());
+            if (dishDetails.containsKey("price") && dishDetails.get("price") != null) {
+                table.addCell(dishDetails.get("price").toString());
+                subTotal=Double.parseDouble(dish.get("quantity").toString()) * Float.valueOf(dishDetails.get("price").toString());
+                table.addCell(subTotal.toString());
+
+            }
+            else {
+                table.addCell("");
+            }
+        } else {
+            table.addCell("");
+        }
+
+
+//        if (dishDetails.containsKey("total") && dishDetails.get("total") != null) {
+//            table.addCell(dishDetails.get("total").toString());
+//        } else {
+//            table.addCell("");
+//        }
+//        table.addCell(((Dish) dish.get("dishname")).getDishname());
+//        table.addCell("55");
+//        table.addCell("55");
+//        table.addCell("55");
+//        table.addCell("55");
     }
+
 
 
 
@@ -135,11 +175,11 @@ public class BillServiceImpl implements BillService {
         try {
             Bill bill = new Bill();
             bill.setUuid((String) requestMap.get("uuid"));
-            bill.setBillname((String) requestMap.get("name"));
-            bill.setEmail((String) requestMap.get("email"));
+            bill.setBillname((String) requestMap.get("billname"));
             bill.setPayementmethod((String) requestMap.get("payment Method"));
             bill.setTotal(Integer.parseInt((String) requestMap.get("totalAmount")));
-            bill.setDishDetail((String) requestMap.get("dishDetails"));
+           // bill.setQuantity("3");
+//            bill.setDishDetail((String) requestMap.get("dishDetails"));
             bill.setCreatedby(jwtFilter.getCurrentUser());
             billRepository.save(bill);
         } catch (Exception ex) {
@@ -149,7 +189,7 @@ public class BillServiceImpl implements BillService {
     }
 
     private boolean validateRequestMap(Map<String, Object> requestMap) {
-        return requestMap.containsKey("name")  && requestMap.containsKey("email") && requestMap.containsKey("paymentMethod") && requestMap.containsKey("dishDetails") && requestMap.containsKey("totalAmount");
+        return requestMap.containsKey("name")  && requestMap.containsKey("paymentMethod") && requestMap.containsKey("dishDetails") && requestMap.containsKey("totalAmount");
     }
 
 

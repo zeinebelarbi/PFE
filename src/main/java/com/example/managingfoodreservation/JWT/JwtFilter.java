@@ -1,5 +1,5 @@
-package com.example.managingfoodreservation.JWT;
 
+package com.example.managingfoodreservation.JWT;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,43 +19,43 @@ import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-@Autowired
-private JwtUtil jwtUtil;
-@Autowired
+    @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
+    private CustomerUsersDetailsService service;
 
-private CustomerUsersDetailsService service;
-Claims claims = null;
-private String userName =null;
+    private Claims claims = null;
+    private String userName =null;
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-
         if (httpServletRequest.getServletPath().matches("/user/login|/user/forgetPassword|/user/signup")){
-    filterChain.doFilter(httpServletRequest,httpServletResponse);
-}else {
-String authorizationHeader= httpServletRequest.getHeader("Authorization");
-String token =null;
-if(authorizationHeader != null && authorizationHeader.startsWith("Bearer")){
-    token = authorizationHeader.substring(7);
-    userName = jwtUtil.extractUsername(token);
-    claims =jwtUtil.extractAllClaims(token);
-}
-if (userName !=null && SecurityContextHolder.getContext().getAuthentication()==null){
-UserDetails userDetails =service.loadUserByUsername(userName);
-if (jwtUtil.validateToken(token,userDetails)){
-    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-            new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-usernamePasswordAuthenticationToken.setDetails(
-        new WebAuthenticationDetailsSource().buildDetails(httpServletRequest)
-);
+            filterChain.doFilter(httpServletRequest,httpServletResponse);
+        }else {
+            String authorizationHeader = httpServletRequest.getHeader("Authorization");
+            String token = null;
+            if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
+                token = authorizationHeader.substring(7);
+                userName = jwtUtil.extractUsername(token);
+                claims = jwtUtil.extractAllClaims(token);
+            }
+            if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = service.loadUserByUsername(userName);
+                if (token != null && jwtUtil.validateToken(token, userDetails)) {
+                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    usernamePasswordAuthenticationToken.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(httpServletRequest)
+                    );
 
-    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 
-}
-}
-    filterChain.doFilter(httpServletRequest,httpServletResponse);
-}
-
+                }
+            }
+            filterChain.doFilter(httpServletRequest,httpServletResponse);
+        }
     }
+
     public boolean isAdmin() {
         if (claims != null && claims.get("role") != null) {
             return "admin".equalsIgnoreCase((String) claims.get("role"));
@@ -69,8 +69,8 @@ usernamePasswordAuthenticationToken.setDetails(
         }
         return false;
     }
-    public String getCurrentUser(){
-     return userName;
-    }
-    }
 
+    public String getCurrentUser(){
+        return userName;
+    }
+}

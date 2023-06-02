@@ -20,14 +20,14 @@ public interface DishController {
     @PostMapping(path = "/update")
     ResponseEntity<String> updateDish(@RequestBody Map<String, String> requestMap);
 
-    @PostMapping(path = "/delete/{iddish}")
+    @DeleteMapping(path = "/delete/{iddish}")
     ResponseEntity<String> deleteDish(@PathVariable Integer iddish);
 
     @PostMapping(path = "/updateStatus")
     ResponseEntity<String> updateStatus(@RequestBody Map<String, String> requestMap);
 
     @GetMapping(path ="/getByMenuCategory/{idMenuCategory}")
-    ResponseEntity<List<DishWrapper>> getByMenuCategory(@PathVariable("idMenuCategory") Integer idMenuCategory);
+    ResponseEntity<List<DishWrapper>>   getDishsByMenucategory(@PathVariable("idMenuCategory") Integer idMenuCategory);
 
     @GetMapping(path ="/getById/{iddish}")
     ResponseEntity<DishWrapper> getDishById(@PathVariable Integer iddish);

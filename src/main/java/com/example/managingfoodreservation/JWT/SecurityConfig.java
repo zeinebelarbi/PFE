@@ -64,6 +64,4 @@ CustomerUsersDetailsService customerUsersDetailsService;
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
-
 }

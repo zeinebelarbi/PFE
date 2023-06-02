@@ -41,7 +41,7 @@ public class Dish implements Serializable {
     private String description;
 
     @Column(name ="price")
-    private Integer price;
+    private Float price;
 
     @Column(name="status")
     private String status;

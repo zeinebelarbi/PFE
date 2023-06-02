@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Map;
 
-@RequestMapping(path ="/dashbord")
+@RequestMapping(path ="/dashboard")
 public interface DashboardController {
     @GetMapping(path="/details")
     ResponseEntity<Map<String,Object>> getCount();

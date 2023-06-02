@@ -6,28 +6,28 @@ import lombok.Data;
 @Data
 public class DishWrapper {
     Integer  iddish;
-    String  dishname ;
+    String  name ;
     String description;
-    Integer price;
+    Float price;
     String status;
     Integer idMenuCategory;
    String  menucategoryname;
-   public DishWrapper(Integer iddish,String  dishname,String description,Integer price,String status, Integer idMenuCategory,String menucategoryname ){
+   public DishWrapper(Integer iddish,String  name,String description,Float price,String status, Integer idMenuCategory,String menucategoryname ){
 this.iddish=iddish;
-this.dishname=dishname;
+this.name=name;
 this.description=description;
 this.price=price;
 this.status=status;
 this.idMenuCategory=idMenuCategory;
 this.menucategoryname=menucategoryname;
    }
-    public DishWrapper(Integer iddish ,String dishname){
+    public DishWrapper(Integer iddish ,String name){
        this.iddish=iddish;
-       this.dishname=dishname;
+       this.name=name;
     }
-    public DishWrapper(Integer iddish ,String dishname,String description,Integer price){
+    public DishWrapper(Integer iddish ,String name,String description,float price){
         this.iddish=iddish;
-        this.dishname=dishname;
+        this.name=name;
         this.description=description;
         this.price=price;
     }

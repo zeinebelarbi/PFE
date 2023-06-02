@@ -61,7 +61,7 @@ public  class MenuCategoryServiceImpl implements MenuCategoryService {
 
     private boolean validateCategoryMap(Map<String, String> requestMap, boolean validateId) {
         if (requestMap.containsKey("menucategoryname")) {
-            if (requestMap.containsKey("id") && validateId) {
+            if (requestMap.containsKey("idMenuCategory") && validateId) {
                 return true;
             } else if (!validateId) {
                 return true;
@@ -78,10 +78,11 @@ public  class MenuCategoryServiceImpl implements MenuCategoryService {
         MenuCategory menuCategory = new MenuCategory();
         menuCategory.setMenucategoryname(requestMap.get("menucategoryname"));
         if (validateId) {
-            menuCategory.setIdMenuCategory(Integer.parseInt(requestMap.get("id")));
+            menuCategory.setIdMenuCategory(Integer.parseInt(requestMap.get("idMenuCategory")));
         }
         return menuCategory;
     }
+
 
 
     @Override
@@ -104,12 +105,12 @@ return new ResponseEntity<List<MenuCategory>>(new ArrayList<>(),HttpStatus.INTER
         try{
             if (jwtFilter.isAdmin()){
                 if (validateCategoryMap(requestMap, true)){
-                    Optional optional= menuCategoryRepository.findById(Integer.parseInt(requestMap.get("id")));
+                    Optional optional= menuCategoryRepository.findById(Integer.parseInt(requestMap.get("idMenuCategory")));
                     if(!optional.isEmpty()){
                         menuCategoryRepository.save(getMenuCategoryFromMap(requestMap, true));
                         return MenuUtils.getResponseEntity("MenuCategory updated successfully",HttpStatus.OK);
                     }else{
-                        return MenuUtils.getResponseEntity("MenuCategory id doesn't exist",HttpStatus.OK);
+                        return MenuUtils.getResponseEntity("MenuCategory id doesn't exist",HttpStatus.NOT_FOUND);
                     }
                 }
                 return MenuUtils.getResponseEntity(MenuConstants.INVALID_DATA,HttpStatus.BAD_REQUEST);

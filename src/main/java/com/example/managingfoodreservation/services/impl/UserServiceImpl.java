@@ -94,9 +94,10 @@ public class UserServiceImpl implements UserService {
                     new UsernamePasswordAuthenticationToken(requestMap.get("email"), requestMap.get("password"))
             );
             if (auth.isAuthenticated()) {
-                if (customerUsersDetailsService.getUserDetail().getStatus().equalsIgnoreCase("true")) {
+                User userDetail = customerUsersDetailsService.getUserDetail();
+                if (userDetail != null && "true".equalsIgnoreCase(userDetail.getStatus())) {
                     return new ResponseEntity<String>("{\"token\":\"" + jwtUtil.generateToken(
-                            customerUsersDetailsService.getUserDetail().getEmail(), customerUsersDetailsService.getUserDetail().getRole()) + "\"}"
+                            userDetail.getEmail(), userDetail.getRole()) + "\"}"
                             , HttpStatus.OK);
                 } else {
                     return new ResponseEntity<String>("{\"message\":\"" + "wait for admin approval." + "\"}",
@@ -175,9 +176,9 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> changePassword(Map<String, String> requestMap) {
         try {
             User userObj = userRepository.findByEmail(jwtFilter.getCurrentUser());
-            if (!userObj.equals(null)) {
+            if (userObj != null) {
                 if (userObj.getPassword().equals(requestMap.get("oldPassword"))) {
-                    userObj.setPassword(requestMap.get(requestMap.get("newPassword")));
+                    userObj.setPassword(requestMap.get("newPassword")); // Corrected here
                     userRepository.save(userObj);
                     return MenuUtils.getResponseEntity("Password Updated Successfully ", HttpStatus.OK);
                 }
@@ -195,17 +196,18 @@ public class UserServiceImpl implements UserService {
 
     }
 
+
     @Override
     public ResponseEntity<String> forgotPassword(Map<String, String> requestMap) {
-        try{
-  User user =userRepository.findByEmail(requestMap.get("email"));
-if(!Objects.isNull(user)&& !Strings.isNullOrEmpty(user.getEmail())){
+        try {
+            User user = userRepository.findByEmail(requestMap.get("email"));
+            if (!Objects.isNull(user) && !Strings.isNullOrEmpty(user.getEmail())) {
 
-emailUtils.forgotMail(user.getEmail(), "Credentials by Food management system", user.getPassword());
-    return MenuUtils.getResponseEntity("check your mail for credentials.",HttpStatus.OK);
-}
-        } catch(Exception ex){
-        ex.printStackTrace();
+                emailUtils.forgotMail(user.getEmail(), "Credentials by Food management system", user.getPassword());
+                return MenuUtils.getResponseEntity("check your mail for credentials.", HttpStatus.OK);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
 
         }
         return MenuUtils.getResponseEntity(MenuConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -84,7 +84,7 @@ return dishService.updateStatus(requestMap);
     }
 
     @Override
-    public ResponseEntity<List<DishWrapper>> getByMenuCategory(Integer idMenuCategory) {
+    public ResponseEntity<List<DishWrapper>>   getDishsByMenucategory(Integer idMenuCategory) {
         try{
             return dishService. getByMenuCategory(idMenuCategory);
         }catch(Exception ex){

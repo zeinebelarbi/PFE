@@ -39,4 +39,6 @@ public class Bill implements Serializable {
     private String createdby;
     @Column(name="email" )
     private String email;
+    @Column(name="quantity" )
+    private String quantity;
 }

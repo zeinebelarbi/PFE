@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 @RequestMapping("/bill")
+@RestController
 public interface BillController {
-    @PostMapping(path="/generateReport")
+    @PostMapping(path="/generatedReport")
     ResponseEntity<String>generateReport(@RequestBody Map<String,Object> requestMap);
     @GetMapping(path ="/getBills")
     ResponseEntity<List<Bill>>getBills();
