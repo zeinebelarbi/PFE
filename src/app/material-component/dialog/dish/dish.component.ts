@@ -27,8 +27,8 @@ export class DishComponent implements OnInit {
 
   ngOnInit(): void {
     this.dishForm = this.formBuilder.group({
-      name: [null, [Validators.required, Validators.pattern(GlobalConstants.nameRegex)]],
-      menucategoryId: [null, [Validators.required]],
+      dishname: [null, [Validators.required, Validators.pattern(GlobalConstants.nameRegex)]],
+      MenuCategoryId: [null, [Validators.required]],
       price: [null, [Validators.required]],
       description: [null, [Validators.required]]
     });
@@ -64,8 +64,8 @@ export class DishComponent implements OnInit {
     var formData = this.dishForm.value;
     var data = {
       iddish: null,
-      name: formData.name,
-      menucategoryId: formData.menucategoryId,
+      dishname: formData.dishname,
+      MenuCategoryId: formData.MenuCategoryId,
       price: formData.price,
       description: formData.description
     };
@@ -96,8 +96,8 @@ export class DishComponent implements OnInit {
     var formData = this.dishForm.value;
     var data = {
       iddish: this.dialogData.data.iddish,
-      name: formData.name,
-      menucategoryId: formData.menucategoryId,
+      dishname: formData.dishname,
+      MenuCategoryId: formData.MenuCategoryId,
       price: formData.price,
       description: formData.description
     }

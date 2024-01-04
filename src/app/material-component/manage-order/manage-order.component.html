@@ -1,6 +1,6 @@
 <mat-card>
     <b><span>Manage Order</span></b>
-    <button mat-flat-button color="primary" class="float-right" [disabled]= "validateSubmit()" (click)= "submitAction()">
+    <button mat-flat-button color="primary" class="right-btn" [disabled]= "validateSubmit()" (click)= "submitAction()">
         <mat-icon>print</mat-icon>submit & Get Bill
     </button>
 </mat-card>
@@ -18,14 +18,7 @@
                         <span *ngIf= "manageOrderForm.controls.name.errors.pattern">This field is invalid</span>
                     </mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="standard" fxFlex>
-                    <mat-label>Email</mat-label>
-                    <input matInput formControlName="email" required>
-                    <mat-error *ngIf="manageOrderForm.controls.email.touched && manageOrderForm.controls.email.invalid">
-                        <span *ngIf="manageOrderForm.controls.email.errors.required">This field is mandatory</span>
-                        <span *ngIf="manageOrderForm.controls.email.errors.pattern">This field is invalid</span>
-                    </mat-error>
-                </mat-form-field>
+              
                 <mat-form-field appearance="standard" fxFlex>
                     <mat-label>Payment Method</mat-label>
                     <mat-select formControlName="paymentMethod" required>
@@ -108,27 +101,23 @@
     <table mat-table [dataSource]= "dataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef= "let element" >{{element.name}}</td>
+            <td mat-cell *matCellDef= "let element" >{{element.dishname.name}}</td>
         </ng-container>
         <ng-container matColumnDef="menucategoryname">
             <th mat-header-cell *matHeaderCellDef>Menucategoryname</th>
-            <td mat-cell *matCellDef= "let element" >{{element.menucategoryname}}</td>
+            <td mat-cell *matCellDef= "let element" >{{element.dishname.menucategoryname}}</td>
         </ng-container>
         <ng-container matColumnDef="description">
             <th mat-header-cell *matHeaderCellDef>Description</th>
-            <td mat-cell *matCellDef= "let element" >{{element.description}}</td>
+            <td mat-cell *matCellDef= "let element" >{{element.dishname.description}}</td>
         </ng-container>
         <ng-container matColumnDef="price">
             <th mat-header-cell *matHeaderCellDef>Price</th>
-            <td mat-cell *matCellDef= "let element" >{{element.price}}</td>
+            <td mat-cell *matCellDef= "let element" >{{element.dishname.price}}</td>
         </ng-container> 
         <ng-container matColumnDef="quantity">
             <th mat-header-cell *matHeaderCellDef>Quantity</th>
             <td mat-cell *matCellDef= "let element" >{{element.quantity}}</td>
-        </ng-container>
-        <ng-container matColumnDef="total">
-            <th mat-header-cell *matHeaderCellDef>Total</th>
-            <td mat-cell *matCellDef= "let element" >{{element.total}}</td>
         </ng-container>
         <ng-container matColumnDef="edit">
             <th mat-header-cell *matHeaderCellDef>Delete</th>

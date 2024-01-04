@@ -9,9 +9,11 @@ export class BillService {
 url= environment.apiUrl;
   constructor(private httpClient:HttpClient ) { }
 generateReport(data:any){
+   console.log(data)
   return this.httpClient.post(this.url+"/bill/generatedReport",data,{
     headers:new HttpHeaders().set('Content-Type',"application/json") 
   })
+ 
 }
 
 getPdf(data:any):Observable<Blob>{

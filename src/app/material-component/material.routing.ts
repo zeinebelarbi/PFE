@@ -29,7 +29,7 @@ data: {
 component:ManageOrderComponent,
 canActivate:[RouteGuardService],
 data: {
-    expectedRole:['admin','user']
+    expectedRole:['user']
 }
     },
     {
@@ -37,7 +37,7 @@ data: {
 component:ViewBillComponent,
 canActivate:[RouteGuardService],
 data: {
-    expectedRole:['admin','user']
+    expectedRole:['user']
 }
     },
     {

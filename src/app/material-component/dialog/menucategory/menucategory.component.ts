@@ -46,7 +46,7 @@ handleSubmit(){
 add(){
   var formData = this.menucategoryForm.value;
   var data={
-   menucategoryname: formData.menucategoryname
+   menucategoryname: formData.name
   }
   this.menucategoryService.add(data).subscribe((response:any)=>{
     this.dialogRef.close();

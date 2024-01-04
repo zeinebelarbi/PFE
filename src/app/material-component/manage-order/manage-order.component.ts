@@ -14,7 +14,7 @@ import { ClassGetter } from '@angular/compiler/src/output/output_ast';
   styleUrls: ['./manage-order.component.scss']
 })
 export class ManageOrderComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'menucategoryname', 'description', 'price', 'quantity', 'total', 'edit'];
+  displayedColumns: string[] = ['name', 'menucategoryname', 'description', 'price', 'quantity', 'edit'];
   dataSource: any = [];
   manageOrderForm: any = FormGroup;
   menucategorys: any = [];
@@ -34,7 +34,6 @@ export class ManageOrderComponent implements OnInit {
     this.getMenuCategorys();
     this.manageOrderForm = this.formBuilder.group({
       name: [null, [Validators.required, Validators.pattern(GlobalConstants.nameRegex)]],
-      email: [null, [Validators.required, Validators.pattern(GlobalConstants.emailRegex)]],
       paymentMethod: [null, [Validators.required]],
       dishname: [null, [Validators.required]],
       menucategoryname: [null, [Validators.required]],
@@ -79,7 +78,7 @@ export class ManageOrderComponent implements OnInit {
 
   getDishDetails(value: any) {
     console.log("===============================")
-    this.dishService.getById(value.idMenuCategory).subscribe((response: any) => {
+    this.dishService.getById(value.iddish).subscribe((response: any) => {
       console.log(this.dishs)
       this.price = response.price;
       console.log("=====>"+this.price)
@@ -119,7 +118,7 @@ export class ManageOrderComponent implements OnInit {
 
   }
   validateSubmit() {
-    if (this.totalAmount === 0 || this.manageOrderForm.controls['name'].value === null || this.manageOrderForm.controls['email'].value === null ||
+    if (this.totalAmount === 0 || this.manageOrderForm.controls['name'].value === null ||
       this.manageOrderForm.controls['paymentMethod'].value === null) {
       return true;
     }
@@ -127,24 +126,26 @@ export class ManageOrderComponent implements OnInit {
       return false;
   }
   add() {
-    alert("Zeineb")
+  
     this.cantineservice.openCantine(GlobalConstants.dishAdded, "success");
     var formData = this.manageOrderForm.value;
     console.log(formData)
-    //this.dataSource.push({ iddish: formData.dish.iddish, name: formData.dish.name, menucategory: formData.menucategory.name, quantity: formData.quantity, price: formData.price, total: formData.total });
-    this.dataSource.push(formData.dishname)
+   // this.dataSource.push({ iddish: formData.dishname.iddish, name: formData.dishname.name, menucategory: formData.menucategory.name, quantity: formData.quantity, price: formData.dishname.price, total: formData.total });
+    this.dataSource.push({dishname:formData.dishname,quantity: formData.quantity })
+  
     console.log(this.dataSource)
-    var dishName = this.dataSource.find((e: { iddish: number }) => e.iddish === formData.dish.iddish);
+    var dishName = this.dataSource.find((e: { iddish: number }) => e.iddish === formData.dishname.iddish);
+    this.totalAmount = this.totalAmount + formData.total;
+    this.dataSource = [...this.dataSource];
     
-    
-    if (dishName === undefined) {
+    /*if (dishName === undefined) {
       this.totalAmount = this.totalAmount + formData.total;
       this.dataSource = [...this.dataSource];
       this.cantineservice.openCantine(GlobalConstants.dishAdded, "success");
     }
     else {
       this.cantineservice.openCantine(GlobalConstants.dishExistError, GlobalConstants.error);
-    }
+    }*/
   }
   handleDeleteAction(value: any, element: any) {
     this.totalAmount = this.totalAmount - element.total;
@@ -154,12 +155,15 @@ export class ManageOrderComponent implements OnInit {
   submitAction() {
     var formData = this.manageOrderForm.value;
     var data = {
+     
       name: formData.name,
-      email: formData.email,
       paymentMethod: formData.paymentMethod,
       totalAmount: this.totalAmount.toString(),
-      dishDetails: JSON.stringify(this.dataSource)
+      dishDetails: this.dataSource,
+     
     }
+    console.log(data)
+
     this.ngxService.start();
     this.billService.generateReport(data).subscribe((response: any) => {
       this.downloadFile(response?.uuid);

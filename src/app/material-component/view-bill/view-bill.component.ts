@@ -15,7 +15,7 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./view-bill.component.scss']
 })
 export class ViewBillComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'email', 'paymentMethod', 'total', 'quantity', 'view'];
+  displayedColumns: string[] = ['name', 'email', 'paymentMethod', 'total','view'];
   dataSource: any;
   responseMessage: any;
   constructor(private billService:BillService,    
@@ -65,18 +65,18 @@ export class ViewBillComponent implements OnInit {
 handleDeleteAction(values:any){
   const dialogConfig = new MatDialogConfig();
   dialogConfig.data={
-    message :'delete'+values.name+'bill',
+    message :'delete'+values.billname+'bill',
     confirmation:true
   };
   const dialogRef=this.dialog.open(ConfirmationComponent,dialogConfig);
   const sub =dialogRef.componentInstance.onEmitStatusChange.subscribe((response)=>{
     this.ngxService.start();
-    this.deleteBill(values.id);
+    this.deleteBill(values.idbill);
     dialogRef.close()
   })
 }
-deleteBill(id:any){
-this.billService.delete(id).subscribe((response:any)=>{
+deleteBill( idbill:any){
+this.billService.delete( idbill).subscribe((response:any)=>{
   this.ngxService.stop();
   this.tableData();
   this.responseMessage = response?.message;
@@ -96,10 +96,10 @@ this.billService.delete(id).subscribe((response:any)=>{
 downloadReportAction(values:any){
   this.ngxService.start();
   var data ={
-    name:values.name,
+    billname:values.billname,
     email:values.email,
     uuid:values.uuid,
-    PaymentMethod:values.PaymentMethod,
+    paymentMethod:values.paymentMethod,
     totalAmount:values.total.toString(),
     dishDetails:values.dishDetail
   }

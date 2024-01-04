@@ -16,11 +16,11 @@
 <div fxflex fxLayout="column">
   <div fxLayout="row wrap">
     <mat-form-field appearance="standard" fxFlex>
-        <mat-label>Name</mat-label>
-        <input matInput formControlName="name" required>
-        <mat-error *ngIf="dishForm.controls.name.touched && dishForm.controls.name.invalid">
-            <span *ngIf="dishForm.controls.name.errors.required">This field is mandatory.</span> 
-            <span *ngIf="dishForm.controls.name.errors.pattern">This field is invalid.</span> 
+        <mat-label>Dish name</mat-label>
+        <input matInput formControlName="dishname" required>
+        <mat-error *ngIf="dishForm.controls.dishname.touched && dishForm.controls.dishname.invalid">
+            <span *ngIf="dishForm.controls.dishname.errors.required">This field is mandatory.</span> 
+            <span *ngIf="dishForm.controls.dishname.errors.pattern">This field is invalid.</span> 
         </mat-error>
     </mat-form-field>
     
@@ -38,7 +38,7 @@
     </mat-form-field> 
     <mat-form-field appearance="standard" fxFlex>
         <mat-label>Menu Category</mat-label>
-        <mat-select formControlName ="menucategoryId">
+        <mat-select formControlName ="MenuCategoryId">
             <mat-option *ngFor="let menucategory of menucategorys" [value]="menucategory.idMenuCategory" >
                 {{menucategory.menucategoryname}}
             </mat-option>

@@ -6,10 +6,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./view-bill-dishs.component.scss']
 })
 export class ViewBillDishsComponent implements OnInit {
-  displayedColumns:string[]=['name','menucategory','price','quantity','total'];
+  displayedColumns:string[]=['name','menucategoryname','price','quantity','total'];
   dataSource: any;
   data:any;
-  constructor(@Inject(MAT_DIALOG_DATA) public dialogData:any,public dialogRef:MatDialogRef<ViewBillDishsComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public dialogData:any,
+  public dialogRef:MatDialogRef<ViewBillDishsComponent>) { }
 
   ngOnInit() {
     this.data=this.dialogData.data;

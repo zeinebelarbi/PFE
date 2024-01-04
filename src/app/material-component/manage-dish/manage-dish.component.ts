@@ -14,7 +14,7 @@ import { ConfirmationComponent } from '../dialog/confirmation/confirmation.compo
   styleUrls: ['./manage-dish.component.scss']
 })
 export class ManageDishComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'menucategoryname', 'description', 'price', 'edit'];
+  displayedColumns: string[] = ['dishname', 'menucategoryname', 'description', 'price', 'edit'];
   dataSource: any;
   //length1:any;  
   responseMessage: any;
@@ -85,7 +85,7 @@ export class ManageDishComponent implements OnInit {
        })
     } 
     handleDeleteAction(values:any){
-    
+      console.log(values)
       const dialogConfig = new MatDialogConfig();
       dialogConfig.data={
        message:'delete'+values.name+'dish',
@@ -94,7 +94,7 @@ export class ManageDishComponent implements OnInit {
        const dialogRef = this.dialog.open(ConfirmationComponent,dialogConfig);
        const sub =dialogRef.componentInstance.onEmitStatusChange.subscribe((response)=>{
         this.ngxService.start();
-        this.deleteDish(values.id);
+        this.deleteDish(values.iddish);
         dialogRef.close();
        })
     }
